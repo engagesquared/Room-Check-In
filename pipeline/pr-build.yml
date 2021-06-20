@@ -1,13 +1,13 @@
 pool:
-  vmImage: VS2017-Win2016
+  vmImage: "ubuntu-latest"
 
 name: $(Build.DefinitionName)_$(Date:yyMM).$(DayOfMonth)$(Rev:r)
 
 steps:
   - task: NodeTool@0
-    displayName: Use Node 12.x
+    displayName: Use Node 14.x
     inputs:
-      versionSpec: "12.x"
+      versionSpec: "14.x"
   - script: |
       sudo curl -sfL https://install.goreleaser.com/github.com/tj/node-prune.sh | sudo bash -s -- -b /usr/local/bin
     displayName: Install node-prune
