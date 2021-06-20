@@ -3,7 +3,7 @@
     "promptValues": {
       "developer": "Engage Squared"
     },
-    "libraryName": "optusLocationCheckinApp",
+    "libraryName": "roomCheckinApp",
     "generator-version": "3.2.0"
   }
 }

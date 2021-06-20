@@ -5,9 +5,9 @@ import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 
 /**
- * Implementation of optus checkin configuration page
+ * Implementation of room checkin configuration page
  */
-export const OptusCheckinTabConfig = () => {
+export const RoomCheckinConfig = () => {
 
     const [{ inTeams, theme, context }] = useTeams({});
     const [text, setText] = useState<string>();
@@ -16,10 +16,10 @@ export const OptusCheckinTabConfig = () => {
     const onSaveHandler = (saveEvent: microsoftTeams.settings.SaveEvent) => {
         const host = "https://" + window.location.host;
         microsoftTeams.settings.setSettings({
-            contentUrl: host + "/optusCheckinTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
-            websiteUrl: host + "/optusCheckinTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
-            suggestedDisplayName: "optus checkin",
-            removeUrl: host + "/optusCheckinTab/remove.html?theme={theme}",
+            contentUrl: host + "/roomCheckin/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+            websiteUrl: host + "/roomCheckin/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+            suggestedDisplayName: "Room CheckIn",
+            removeUrl: host + "/roomCheckin/remove.html?theme={theme}",
             entityId: entityId.current
         });
         saveEvent.notifySuccess();

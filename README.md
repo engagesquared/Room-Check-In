@@ -1,4 +1,4 @@
-# optus location checkin app - Microsoft Teams App
+# room checkin app - Microsoft Teams App
 
 Generate a Microsoft Teams application.
 
@@ -10,6 +10,35 @@ Head on over to [Microsoft Teams official documentation](https://developer.micro
 
 ## Project setup
 
+### Azure Resources (App Registration)
+Browse to Azure Active Directory in the Microsoft 365 admin center or Azure portal.
+
+b. Under "Manage", click "App Registration" to open the App Registrations. Then click "+ New registration" to register a new application.
+c. Give your application a name and select who can use the application. The sample was tested using the first option, "Accounts in this organizational directory only" but the multitenant option should work as long as you use the multitenant endpoint ??????
+d. Under Redirect URI, enter http://localhost:3000/ for local debugging.
+e. Under API permissions, click "+ Add a permission", then click Microsoft Graph, and then click Delegated permissions. Grant "User.Read","Place.Read.All", "Calendars.Read", "Calendars.ReadWrite" permissions.
+f. Return to the application overview and make note of your Application (client) ID and Directory (tenant) ID; you'll need them in the next step.
+
+### Azure Resources (Web App)
+1. Make sure the resource group is available in Azure is set correctly
+3. Install the Azure CLI and Terraform CLI:
+   - Windows Subsystem for Linux (WSL) or OSX, using Brew, in terminal:
+   ```bash
+   brew update && brew install azure-cli
+   ```
+   - Windows
+      - [Install or Update Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-powershell)
+4. In terminal: run below command to login to Azure of target environment (dev/test/uat/prod)
+   ```bash
+   az login --tenant <tenant-id>
+
+   //E2 DEV - tenant-id: 9e917a0a-b367-451c-995e-826b731b78c6
+   ```
+5. In terminal: run below command to create web app app of target environment (dev/test/uat/prod)
+TODO
+
+
+### Teams App
 All required source code are located in the `./src` folder:
 
 * `client` client side code

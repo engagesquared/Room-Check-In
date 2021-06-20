@@ -11,8 +11,8 @@
     "termsOfUseUrl": "https://{{PUBLIC_HOSTNAME}}/tou.html"
   },
   "name": {
-    "short": "optus location checkin app",
-    "full": "optus location checkin app"
+    "short": "room location checkin app",
+    "full": "room location checkin app"
   },
   "description": {
     "short": "TODO: add short description here",
@@ -25,12 +25,12 @@
   "accentColor": "#D85028",
   "configurableTabs": [
     {
-      "configurationUrl": "https://{{PUBLIC_HOSTNAME}}/optusCheckinTab/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
+      "configurationUrl": "https://{{PUBLIC_HOSTNAME}}/roomCheckin/config.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
       "canUpdateConfiguration": true,
       "scopes": [
         "team"
       ],
-      "sharePointPreviewImage": "https://{{PUBLIC_HOSTNAME}}/assets/optusCheckinTab-preview.png",
+      "sharePointPreviewImage": "https://{{PUBLIC_HOSTNAME}}/assets/roomCheckinTab-preview.png",
       "supportedSharePointHosts": [
         "sharePointFullPage",
         "sharePointWebPart"
