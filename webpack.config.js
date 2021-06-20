@@ -56,7 +56,7 @@ const config = [{
         path: path.join(__dirname, "/dist/web/scripts"),
         filename: "[name].js",
         libraryTarget: "umd",
-        library: "optusLocationCheckinApp",
+        library: "roomCheckinApp",
         publicPath: "/scripts/"
     },
     externals: {},

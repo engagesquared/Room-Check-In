@@ -6,7 +6,7 @@ import * as React from "react";
 export const render = (type: any, element: HTMLElement) => {
     ReactDOM.render(React.createElement(type, {}), element);
 };
-// Automatically added for the optusCheckinTab tab
-export * from "./optusCheckinTab/OptusCheckinTab";
-export * from "./optusCheckinTab/OptusCheckinTabConfig";
-export * from "./optusCheckinTab/OptusCheckinTabRemove";
+// Automatically added for the roomCheckin tab
+export * from "./roomCheckin/RoomCheckinTab";
+export * from "./roomCheckin/RoomCheckinTabConfig";
+export * from "./roomCheckin/RoomCheckinTabRemove";

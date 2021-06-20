@@ -6,9 +6,9 @@ import * as microsoftTeams from "@microsoft/teams-js";
 import jwtDecode from "jwt-decode";
 
 /**
- * Implementation of the optus checkin content page
+ * Implementation of the room checkin content page
  */
-export const OptusCheckinTab = () => {
+export const RoomCheckin = () => {
 
     const [{ inTeams, theme, context }] = useTeams();
     const [entityId, setEntityId] = useState<string | undefined>();

@@ -1,0 +1,11 @@
+{    "AUTH_AUTHORITYHOSTURL": "https://login.microsoftonline.com",
+    "AUTH_TENANTID": "9e917a0a-b367-451c-995e-826b731b78c6",
+    "AUTH_CLIENTID": "469a8a3f-7865-48dd-b329-9d81bf2dc04b",
+    "AUTH_GRAPH_SCOPE": "https://graph.microsoft.com/.default",
+    "AUTH_SP_SCOPE": "https://engage2syddev.sharepoint.com/.default",
+    "AUTH_CERTIFICATE_THUMBPRINT": "C069412500204A45361E07BF271DEC735EC3F236",
+
+    "USERS_GRAPH_API_URL": "https://graph.microsoft.com/v1.0",
+    "PLACES_GRAPH_API_URL": "https://graph.microsoft.com/v1.0",
+    "EVENTS_GRAPH_API_URL": "https://graph.microsoft.com/v1.0"
+}

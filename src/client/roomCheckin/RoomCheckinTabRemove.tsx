@@ -5,9 +5,9 @@ import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 
 /**
- * Implementation of optus checkin remove page
+ * Implementation of room checkin remove page
  */
-export const OptusCheckinTabRemove = () => {
+export const RoomCheckinRemove = () => {
 
     const [{ inTeams, theme }] = useTeams();
 
