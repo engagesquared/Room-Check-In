@@ -51,7 +51,7 @@ export default class placesGraphAPIService {
         }
     }
 
-    public async getMyEventAttendeesByGeoCoordinates(geoCoordinates: IGeoCoordinates): Promise<IAttendee[]> {
+    public async getMyEventAttendeesByLocationEmailAddress(locationEmailAddress: string): Promise<IAttendee[]> {
         return await [{
             type: "required",
             status: {
@@ -83,7 +83,7 @@ export default class placesGraphAPIService {
                 },
             };
 
-            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$count=true&$filter=location/coordinates/latitude eq ${geoCoordinates.latitude} and location/coordinates/longitude eq ${geoCoordinates.longitude} and (formatDateTime(start,'dd/MM/yyyyT00:00:00Z') ge formatDateTime(utcNow(),'dd/MM/yyyyT00:00:00Z') and formatDateTime(end,'dd/MM/yyyyT00:00:00Z') le formatDateTime(utcNow(),'dd/MM/yyyyT00:00:00Z'))&$top=1`, requestConfig);
+            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$count=true&$filter=locationEmailAddress eq ${locationEmailAddress} and (formatDateTime(start,'dd/MM/yyyyT00:00:00Z') ge formatDateTime(utcNow(),'dd/MM/yyyyT00:00:00Z') and formatDateTime(end,'dd/MM/yyyyT00:00:00Z') le formatDateTime(utcNow(),'dd/MM/yyyyT00:00:00Z'))&$top=1`, requestConfig);
             console.log(`getLoggedInUser::user is returned successfully`);
 
             return response

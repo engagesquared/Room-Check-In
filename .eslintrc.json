@@ -1,0 +1,37 @@
+{
+    "extends": [
+        "standard"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "object-shorthand": 2,
+        "quotes": "off",
+        "semi": "off",
+        "indent": "off",
+        "space-before-function-paren": "off",
+        "space-in-parens": "off",
+        "padded-blocks": "off",
+        "no-unused-vars": "off",
+        "spaced-comment": "off",
+        "eol-last": "off",
+        "no-trailing-spaces": "off",
+        "key-spacing": "off",
+        "import/first": "off",
+        "prefer-const": "off",
+        "brace-style": "off",
+        "no-throw-literal": "off",
+        "no-useless-catch": "off",
+        "no-multi-spaces": "off",
+        "no-unreachable": "off",
+        "quote-props": "off",
+        "comma-dangle": "off",
+        "new-cap": "off"
+    }
+}

@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 import jwtDecode from "jwt-decode";
-import keyVaultService from "../services/keyVaultService";
-import usersGraphAPIService from "../services/usersGraphAPIService";
-import { authenticationService } from "../services/authenticationService";
+import keyVaultService from "../../server/services/keyVaultService";
+import usersGraphAPIService from "../../server/services/usersGraphAPIService";
+import { authenticationService } from "../../server/services/authenticationService";
 
 /**
  * Implementation of the Room CheckIn content page
