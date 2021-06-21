@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: VS2017-Win2016
+  vmImage: "ubuntu-latest"
 
 name: $(Build.DefinitionName)_$(Date:yyMM).$(DayOfMonth)$(Rev:r)
 
