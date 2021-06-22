@@ -1,0 +1,7 @@
+[{
+    "resource": "Microsoft Graph",
+    "delegated": [
+        "User.Read", "Calendars.Read", "Place.Read.All", "email", "openid", "profile", "offline_access"
+    ],
+    "application": []
+}]
