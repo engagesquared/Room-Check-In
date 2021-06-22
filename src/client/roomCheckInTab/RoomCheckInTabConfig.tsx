@@ -5,7 +5,7 @@ import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 
 /**
- * Implementation of Room CheckIn configuration page
+ * Implementation of Room Check-In configuration page
  */
 export const RoomCheckInTabConfig = () => {
 
@@ -18,7 +18,7 @@ export const RoomCheckInTabConfig = () => {
         microsoftTeams.settings.setSettings({
             contentUrl: host + "/roomCheckInTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
             websiteUrl: host + "/roomCheckInTab/?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
-            suggestedDisplayName: "Room CheckIn",
+            suggestedDisplayName: "Room Check-In",
             removeUrl: host + "/roomCheckInTab/remove.html?theme={theme}",
             entityId: entityId.current
         });

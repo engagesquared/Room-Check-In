@@ -1,9 +1,12 @@
 {
-    "generator-teams": {
-            "promptValues": {
-            "developer": "Engage Squared"
-        },
-        "libraryName": "roomCheckinApp",
-        "generator-version": "3.2.0"
-    }
+  "generator-teams": {
+    "promptValues": {
+      "developer": "Engage Squared",
+      "unitTestsEnabled": false,
+      "lintingSupport": false,
+      "useAzureAppInsights": true
+    },
+    "libraryName": "tabRoomCheckInApp",
+    "generator-version": "3.2.0"
+  }
 }

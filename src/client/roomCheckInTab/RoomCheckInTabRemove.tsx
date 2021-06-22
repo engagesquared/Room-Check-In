@@ -5,7 +5,7 @@ import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 
 /**
- * Implementation of Room CheckIn remove page
+ * Implementation of Room Check-In remove page
  */
 export const RoomCheckInTabRemove = () => {
 

@@ -11,8 +11,8 @@
     "termsOfUseUrl": "https://{{PUBLIC_HOSTNAME}}/tou.html"
   },
   "name": {
-    "short": "Room CheckIn App",
-    "full": "Room CheckIn App"
+    "short": "tab room check in app",
+    "full": "tab room check in app"
   },
   "description": {
     "short": "TODO: add short description here",
@@ -46,7 +46,7 @@
   "showLoadingIndicator": true,
   "isFullScreen": false,
   "webApplicationInfo": {
-    "id": "{{TAB_APP_ID}}",
-    "resource": "{{TAB_APP_URI}}"
+    "id": "{{AUTH_APP_CLIENTID}}",
+    "resource": "{{AUTH_APP_URI}}"
   }
 }
