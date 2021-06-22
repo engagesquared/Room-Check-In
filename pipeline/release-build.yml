@@ -40,8 +40,8 @@ steps:
     inputs:
       rootFolderOrFile: "$(Build.ArtifactStagingDirectory)"
       includeRootFolder: false
-      archiveFile: "$(Build.ArtifactStagingDirectory)/$(appName)-$(Build.BuildNumber).zip"
+      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip"
       archiveType: zip
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: "$(Build.ArtifactStagingDirectory)/$(appName)-$(Build.BuildNumber).zip"
+      targetPath: "$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip"
