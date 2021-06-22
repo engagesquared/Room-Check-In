@@ -4,12 +4,9 @@ import { useState, useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 import jwtDecode from "jwt-decode";
-import keyVaultService from "../../server/services/keyVaultService";
-import usersGraphAPIService from "../../server/services/usersGraphAPIService";
-import { authenticationService } from "../../server/services/authenticationService";
 
 /**
- * Implementation of the Room CheckIn content page
+ * Implementation of the Room Check-In content page
  */
 export const RoomCheckInTab = () => {
 
@@ -21,19 +18,9 @@ export const RoomCheckInTab = () => {
     useEffect(() => {
         if (inTeams === true) {
             microsoftTeams.authentication.getAuthToken({
-                successCallback: async (token: string) => {
+                successCallback: (token: string) => {
                     const decoded: { [key: string]: any; } = jwtDecode(token) as { [key: string]: any; };
                     setName(decoded!.name);
-                    
-                    //graph authentication
-                    const privateKey = await keyVaultService.getPrivateKey();
-                    const authenticationSrv = new authenticationService(privateKey);
-                    const appAccessToken = await authenticationSrv.getAppOnlyAccessToken();
-                    const usersSrv = new usersGraphAPIService(appAccessToken);
-                    const user = await usersSrv.getLoggedInUser();
-                    setName(user.displayName);
-                    console.log(user.displayName);
-
                     microsoftTeams.appInitialization.notifySuccess();
                 },
                 failureCallback: (message: string) => {
@@ -43,7 +30,7 @@ export const RoomCheckInTab = () => {
                         message
                     });
                 },
-                resources: [process.env.TAB_APP_URI as string]
+                resources: [process.env.AUTH_APP_URI as string]
             });
         } else {
             setEntityId("Not in Microsoft Teams");

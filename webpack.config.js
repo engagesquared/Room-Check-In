@@ -4,7 +4,7 @@
 
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
-const ESLintPlugin = require("eslint-webpack-plugin");
+
 
 const path = require("path");
 const fs = require("fs");
@@ -16,7 +16,7 @@ const lint = !(argv["no-linting"] || argv.l === true);
 const config = [{
     entry: {
         server: [
-            path.join(__dirname, "/server/server.ts")
+            path.join(__dirname, "/src/server/server.ts")
         ]
     },
     mode: debug ? "development" : "production",
@@ -48,7 +48,7 @@ const config = [{
 {
     entry: {
         client: [
-            path.join(__dirname, "/client/client.ts")
+            path.join(__dirname, "/src/client/client.ts")
         ]
     },
     mode: debug ? "development" : "production",
@@ -56,13 +56,12 @@ const config = [{
         path: path.join(__dirname, "/dist/web/scripts"),
         filename: "[name].js",
         libraryTarget: "umd",
-        library: "roomCheckinApp",
+        library: "tabRoomCheckInApp",
         publicPath: "/scripts/"
     },
     externals: {},
     devtool: debug ? "source-map" : "source-map",
     resolve: {
-        fallback: { "url": false, "crypto": false, "stream": false },
         extensions: [".ts", ".tsx", ".js"],
         alias: {}
     },
@@ -75,14 +74,9 @@ const config = [{
         }]
     },
     plugins: [
-        new webpack.EnvironmentPlugin({ PUBLIC_HOSTNAME: undefined, TAB_APP_ID: null, TAB_APP_URI: null })
+        new webpack.EnvironmentPlugin({ PUBLIC_HOSTNAME: undefined, AUTH_APP_CLIENTID: null, AUTH_APP_URI: null })
     ]
 }
 ];
-
-if (lint !== false) {
-    config[0].plugins.push(new ESLintPlugin({ extensions: ["ts", "tsx"], failOnError: false }));
-    config[1].plugins.push(new ESLintPlugin({ extensions: ["ts", "tsx"], failOnError: false }));
-}
 
 module.exports = config;

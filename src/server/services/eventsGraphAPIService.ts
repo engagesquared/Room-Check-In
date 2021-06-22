@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { placesAppSetting } from '../../appSettings';
 import { IAttendee } from '../../interfaces/IAttendee';
-import { IGeoCoordinates } from '../../interfaces/IGeoCoordinates';
 import { utilities } from '../../utilities';
 
 export default class placesGraphAPIService {
