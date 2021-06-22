@@ -1,39 +1,29 @@
-const msal = require('@azure/msal-node');
+import * as msal from "@azure/msal-node";
 import { authAppSetting } from '../../appSettings';
 import { constants } from '../../constants';
 
-export class authenticationService {
-    private privateKey: string;
-    constructor(privateKey: string) {
-        this.privateKey = privateKey;
-    }
-
-    public async getAppOnlyAccessToken(): Promise<string> {
+export default class AuthenticationService {
+    public static async getAccessToken(ssoToken: string): Promise<string> {
         try {
-            console.log(`getAppOnlyAccessToken::getting access token`);
+            console.log(`getAccessToken::getting access token`);
             const msalConfig = {
                 auth: {
-                    clientId: authAppSetting.clientId, //"AUTH_CLIENTID": "469a8a3f-7865-48dd-b329-9d81bf2dc04b",
-                    clientCertificate: {
-                        thumbprint: authAppSetting.clientCertificate.thumbprint,
-                        privateKey: this.privateKey
-                    },
+                    clientId: authAppSetting.clientId,
+                    clientSecret: authAppSetting.clientSecret,
                     authority: authAppSetting.authority,
-                    knownAuthorities: authAppSetting.knownAuthorities
                 }
             };
             const cca = new msal.ConfidentialClientApplication(msalConfig);
-            const clientCredentialRequest = {
+
+            const result = await cca.acquireTokenOnBehalfOf({
+                oboAssertion: ssoToken,
                 scopes: constants.AUTH_SCOPES
-            };
-
-            let response = await cca.acquireTokenByClientCredential(clientCredentialRequest)
-            console.log(`getAppOnlyAccessToken::token is returned successfully`);
-
-            return response.accessToken ?? null;
+            });
+            console.log(`getAccessToken::token is returned successfully`);
+            return result?.accessToken ?? "";
         }
         catch (error) {
-            throw (`getAppOnlyAccessToken::${error}`);
+            throw (`getAccessToken::${error}`);
         }
     }
 }

@@ -4,7 +4,7 @@
 
 const webpack = require("webpack");
 const nodeExternals = require("webpack-node-externals");
-
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const path = require("path");
 const fs = require("fs");
@@ -74,7 +74,10 @@ const config = [{
         }]
     },
     plugins: [
-        new webpack.EnvironmentPlugin({ PUBLIC_HOSTNAME: undefined, AUTH_APP_CLIENTID: null, AUTH_APP_URI: null })
+        new webpack.EnvironmentPlugin({ PUBLIC_HOSTNAME: undefined, AUTH_APP_CLIENTID: null, AUTH_APP_URI: null }),
+        // new CopyWebpackPlugin({
+        //     patterns: [{ from: "src/public/locales", to: "web" }],
+        // }),
     ]
 }
 ];

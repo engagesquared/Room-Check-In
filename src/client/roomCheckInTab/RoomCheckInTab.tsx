@@ -2,11 +2,16 @@ import * as React from "react";
 import { Provider, Flex, Text, Button, Header } from "@fluentui/react-northstar";
 import { useState, useEffect } from "react";
 import { useTeams } from "msteams-react-base-component";
-import * as microsoftTeams from "@microsoft/teams-js";
 import jwtDecode from "jwt-decode";
 import { Home } from "../components/home/home";
 import { Success } from "../components/success/success";
 import { UserSelection } from "../components/userSelection/userSelection";
+import { Providers } from "@microsoft/mgt";
+import { MgtTokenProvider } from "../providers/MgtProvider";
+import { getClientSideToken } from "../services/AuthService";
+
+const provider = new MgtTokenProvider();
+Providers.globalProvider = provider;
 
 /**
  * Implementation of the Room Check-In content page
@@ -21,21 +26,11 @@ export const RoomCheckInTab = () => {
 
     useEffect(() => {
         if (inTeams === true) {
-            microsoftTeams.authentication.getAuthToken({
-                successCallback: (token: string) => {
-                    const decoded: { [key: string]: any; } = jwtDecode(token) as { [key: string]: any; };
-                    setName(decoded!.name);
-                    microsoftTeams.appInitialization.notifySuccess();
-                },
-                failureCallback: (message: string) => {
-                    setError(message);
-                    microsoftTeams.appInitialization.notifyFailure({
-                        reason: microsoftTeams.appInitialization.FailedReason.AuthFailed,
-                        message
-                    });
-                },
-                resources: [process.env.AUTH_APP_URI as string]
-            });
+            (async () => {
+                const token = await getClientSideToken();
+                const decoded: { [key: string]: any; } = jwtDecode(token) as { [key: string]: any; };
+                setName(decoded!.name);
+            })()
         } else {
             setEntityId("Not in Microsoft Teams");
         }

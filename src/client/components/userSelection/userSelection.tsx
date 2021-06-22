@@ -3,6 +3,7 @@ import "../../localization/localization";
 import { useTranslation } from "react-i18next";
 import { useStyles } from "./userSelection.styles";
 import { Flex, Checkbox, Text, Avatar, Button, Divider } from "@fluentui/react-northstar";
+import { PeoplePicker } from "@microsoft/mgt-react";
 
 export interface IUserSelectionProp {
     currentUserName: string;
@@ -34,6 +35,7 @@ export const UserSelection = (props: IUserSelectionProp) => {
                     <Text content="Beth Davies" />
                 </Flex>
                 <Text color="brand" content="+ Add another person" />
+                {/* <PeoplePicker placeholder=" " selectionMode="single" /> */}
             </Flex>
             <Flex column className="center" hAlign="center" vAlign="end"
                 style={{

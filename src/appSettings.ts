@@ -1,13 +1,8 @@
 
 export const authAppSetting = {
-    clientId: process.env.AUTH_CLIENTID?.trim(),
+    clientId: process.env.AUTH_APP_CLIENTID?.trim() || "",
+    clientSecret: process.env.AUTH_APP_CLIENTSECRET?.trim() || "",
     authority: `${process.env.AUTH_AUTHORITYHOSTURL?.trim()}/${process.env.AUTH_TENANTID?.trim()}/`,
-    knownAuthorities: [`${process.env.AUTH_AUTHORITYHOSTURL?.trim()}/${process.env.AUTH_TENANTID?.trim()}`],
-    redirectUri: "http://localhost:3000/",
-    clientCertificate: {
-        thumbprint: process.env.AUTH_CERTIFICATE_THUMBPRINT?.trim(),
-        privateKey: "" //is loaded from keyvault secret
-    }
 }
 
 export const keyVaultAppSetting = {

@@ -6,6 +6,7 @@ import { MsTeamsApiRouter, MsTeamsPageRouter } from "express-msteams-host";
 import * as debug from "debug";
 import * as compression from "compression";
 import * as appInsights from "applicationinsights";
+import APIs from "./api/api-list";
 // Initialize debug logging module
 const log = debug("msteams");
 
@@ -31,6 +32,7 @@ express.use(Express.json({
     }
 }));
 express.use(Express.urlencoded({ extended: true }));
+express.use(Express.json());
 
 // Express configuration
 express.set("views", path.join(__dirname, "/"));
@@ -41,9 +43,12 @@ express.use(morgan("tiny"));
 // Add compression - uncomment to remove compression
 express.use(compression());
 
-// Add /scripts and /assets as static folders
+express.use('/api', APIs);
+
+// Add /scripts, /assets and locales as static folders
 express.use("/scripts", Express.static(path.join(__dirname, "web/scripts")));
 express.use("/assets", Express.static(path.join(__dirname, "web/assets")));
+express.use("/locales", Express.static(path.join(__dirname, "web/locales")));
 
 // routing for bots, connectors and incoming web hooks - based on the decorators
 // For more information see: https://www.npmjs.com/package/express-msteams-host

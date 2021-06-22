@@ -3,7 +3,7 @@ import { placesAppSetting } from '../../appSettings';
 import { IAttendee } from '../../interfaces/IAttendee';
 import { utilities } from '../../utilities';
 
-export default class placesGraphAPIService {
+export default class EventsGraphAPIService {
     axiosInstance: AxiosInstance;
     token: string;
 
