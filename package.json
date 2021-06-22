@@ -24,11 +24,15 @@
     "express": "4.16.4",
     "express-msteams-host": "1.7.0",
     "express-session": "1.15.6",
+    "i18next": "^20.3.2",
+    "i18next-xhr-backend": "^3.2.2",
     "jwt-decode": "^3.1.2",
     "morgan": "1.9.1",
     "msteams-react-base-component": "^3.1.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-i18next": "^11.11.0",
+    "react-jss": "^10.6.0"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",
