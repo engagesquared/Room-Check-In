@@ -19,6 +19,17 @@ All required source code are located in the `./src` folder:
 
 For further details see the [Yo Teams documentation](https://github.com/PnP/generator-teams/docs)
 
+## Azure Resources
+
+### Azure Web APP
+steps to create
+
+### Azure Registered APP
+steps to create
+
+### Azure Key Vault
+steps to create
+
 ## Building the app
 
 The application is built using the `build` Gulp task.
