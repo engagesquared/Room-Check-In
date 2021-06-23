@@ -1,5 +1,5 @@
 export interface IUser {
-    id: string;
+    id?: string;
     displayName: string;
     givenName?: string;
     surname?:string;
@@ -8,4 +8,5 @@ export interface IUser {
     jobTitle?:string;
     mobilePhone?:string;
     officeLocation?:string;
+    employeeId?: string;
 }
