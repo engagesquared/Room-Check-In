@@ -1,8 +1,9 @@
 body {
 	font-family: sans-serif;
 	margin: 0 auto;
+	background-color: #5358B3;
 	width: 100%;
-	height: 100%;
+    height: 100%;
 }
 
 .l-header {
@@ -37,4 +38,8 @@ img.logo {
 	width: 100%;
 	min-width: 76px;
 	height: auto;
+}
+
+.center{
+	margin:0 auto;
 }
