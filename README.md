@@ -19,11 +19,6 @@ All required source code are located in the `./src` folder:
 
 For further details see the [Yo Teams documentation](https://github.com/PnP/generator-teams/docs)
 
-## Regitered Application
-1. create new regitered application
-2. set Authentication
-3. set expose an API
-
 ## Azure Resources
 1. Review variables in **main.tf** file in **azureResources** folder and make sure all values are set properly
 2. Install the Azure CLI and Terraform CLI:
@@ -50,6 +45,19 @@ For further details see the [Yo Teams documentation](https://github.com/PnP/gene
     ```bash
     terraform apply -auto-approve
     ```
+
+## Key Vault
+1. Navigate to key vault
+2. Go to Certificates
+3. Create new certificate of type PEM
+4. Download .CER file of certificate 
+   
+## Registered Application
+1. create new regitered application
+2. set Authentication
+3. set expose an API
+4. set API permissions
+5. upload .CER certificate file downloaded from key-vault
 
 ## Building the app
 The application is built using the `build` Gulp task.
