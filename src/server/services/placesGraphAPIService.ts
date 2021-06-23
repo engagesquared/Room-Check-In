@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { placesAppSetting } from '../../appSettings';
-import { IRoom } from '../../interfaces/IRoom';
+import { IRoom } from '../../interfaces/response/IRoom';
 import { utilities } from '../../utilities';
 
 export default class placesGraphAPIService {
@@ -17,7 +17,7 @@ export default class placesGraphAPIService {
         });
     }
 
-    public async getPlaceRoomById(id: string): Promise<IRoom> {
+    public async getPlaceById(id: string): Promise<IRoom> {
         return {
             id: id,
             emailAddress: "room@email.com",
@@ -63,7 +63,7 @@ export default class placesGraphAPIService {
         }
     }
 
-    public async getPlaceRoomByDisplayName(displayName: string): Promise<IRoom> {
+    public async getRoomByDisplayName(displayName: string): Promise<IRoom> {
         return {
             id: "3162F1E1-C4C0-604B-51D8-91DA78989EB1",
             emailAddress: "room@email.com",
