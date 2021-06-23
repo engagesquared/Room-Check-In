@@ -137,7 +137,7 @@ class dataTableStorageService {
         }
     }
 
-    public async getCheckedInUsersInRoom(roomId: string): Promise<IDBUser[]> {
+    public async getAllCheckedInUsersInRoomAndEvent(roomId: string,eventId: string): Promise<IDBUser[]> {
         return await [{
             PartitionKey: "",
             RowKey: "",
@@ -164,7 +164,7 @@ class dataTableStorageService {
             Id: ""
         }];
 
-        const checkInClient = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.CHECKIN_TABLE_NAME}()?$filter=RoomId%20eq%20$'${roomId}')`, constants.CHECKIN_TABLE_NAME, this.credential);
+        const checkInClient = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.CHECKIN_TABLE_NAME}()?$filter=RoomId%20eq%20$'${roomId}'%20and%20'EventId%20eq%20'${eventId}')`, constants.CHECKIN_TABLE_NAME, this.credential);
         const roomCheckIns: IDBCheckIn[] = await checkInClient.listEntities();
         const userIds: string[] = roomCheckIns.map((chechIn) => { return `'${chechIn.UserId}'` });
         const userIdsToFind: string = lodashArray.join(userIds, ',');

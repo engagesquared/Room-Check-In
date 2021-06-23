@@ -88,11 +88,16 @@ router.post('/checkIn', async function(req, res) {
 
 router.get('/checkedInUsersInRoom', async function(req, res) {
     var roomId = (req.params as any).roomId;
+    var eventId = (req.params as any).eventId;
+
     if (!roomId) {
         res.status(400).send('roomId is not found in request params');
     }
+    if (!eventId) {
+        res.status(400).send('eventId is not found in request params');
+    }
 
-    var result = await dataTableStorageService.getCheckedInUsersInRoom(roomId);
+    var result = await dataTableStorageService.getAllCheckedInUsersInRoomAndEvent(roomId, eventId);
     res.send(result);
 });
 
