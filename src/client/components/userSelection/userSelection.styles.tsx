@@ -12,6 +12,9 @@ export const useStyles = createUseStyles((theme: ITheme) => {
         buttonWidth: {
             width: "15.5em",
         },
+        pointer: {
+            cursor: "pointer",
+        },
         '@global': {
             body: {
                 background: "#FFFFFF"

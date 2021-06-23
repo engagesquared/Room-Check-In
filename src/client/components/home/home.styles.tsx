@@ -3,6 +3,12 @@ import { ITheme } from "../../providers/ITheme";
 import { createUseStyles } from "react-jss";
 export const useStyles = createUseStyles((theme: ITheme) => {
     return {
+        container: {
+            '& ui-alert': {
+                width: "20em",
+                textAlign: "center"
+            }
+        },
         paddingTop: {
             paddingTop: "10em",
         },
@@ -11,6 +17,9 @@ export const useStyles = createUseStyles((theme: ITheme) => {
         },
         buttonWidth: {
             width: "20em",
+        },
+        pointer: {
+            cursor: "pointer",
         },
         '@global': {
             body: {
@@ -21,5 +30,6 @@ export const useStyles = createUseStyles((theme: ITheme) => {
                 fontSize: "16px"
             }
         }
+
     };
 });

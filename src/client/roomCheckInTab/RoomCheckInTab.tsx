@@ -9,6 +9,8 @@ import { Success } from "../components/success/success";
 import { UserSelection } from "../components/userSelection/userSelection";
 import { Providers } from "@microsoft/mgt-react";
 import { MgtTokenProvider } from "../providers/MgtProvider";
+import { getLoggedInUserDetails } from "../services/UserService";
+import { IUser } from "../../interfaces/IUser";
 
 const provider = new MgtTokenProvider();
 Providers.globalProvider = provider;
@@ -23,6 +25,8 @@ export const RoomCheckInTab = () => {
     const [name, setName] = useState<string>();
     const [error, setError] = useState<string>();
     const [currentPage, setCurrentPage] = useState<string>('Home');
+    const [currentPageData, setCurrentPageData] = useState<any>();
+    const [currentUserDetail, setcurrentUserDetail] = useState<IUser>();
 
     useEffect(() => {
         if (inTeams === true) {
@@ -52,13 +56,26 @@ export const RoomCheckInTab = () => {
         }
     }, [context]);
 
+    useEffect(() => {
+        (async () => {
+            const currentUserDetail = await getLoggedInUserDetails();
+            setcurrentUserDetail(currentUserDetail);
+        })();
+    }, [getLoggedInUserDetails]);
+
+    const updatePage = (currentPage: string, data?: any) => {
+        setCurrentPage(currentPage);
+        setCurrentPageData(data);
+    };
+
     const renderPage = (pageName: string) => {
         switch (pageName) {
             case 'Home':
-                return (<Home updateCurrentPage={setCurrentPage} />);
+                return (<Home updateCurrentPage={updatePage} />);
             case 'UserSelection':
                 return (<UserSelection updateCurrentPage={setCurrentPage} currentUserName={name ? name : ""}
-                    selectedLocation={"OSC.AG.MR21"} />);
+                    selectedLocationDetail={currentPageData}
+                    currentUserDetail={currentUserDetail as IUser} />);
             case 'Success':
                 return (<Success updateCurrentPage={setCurrentPage} currentUserName={name ? name : ""}
                     selectedLocation={"OSC.AG.MR21"} />)

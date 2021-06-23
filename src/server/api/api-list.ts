@@ -8,10 +8,6 @@ import dataTableStorageService from "../services/dataTableStorageService";
 import { ICheckIn } from "../../interfaces/ICheckIn";
 var router = Express.Router();
 
-router.get('*', function(req, res) {
-    res.status(404).send('Api not found');
-});
-
 router.get('/token', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     res.send(token);
@@ -21,7 +17,7 @@ router.get('/myEventByLocationId', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     var eventsSvc = new eventsGraphAPIService(token);
 
-    var locationId = (req.params as any).locationId;
+    var locationId = (req.query as any).locationId;
     if (!locationId) {
         res.status(400).send('locationId is not found in request params');
     }
@@ -34,7 +30,7 @@ router.get('/myEventByLocationEmailAddress', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     var eventsSvc = new eventsGraphAPIService(token);
 
-    var locationEmailAddress = (req.params as any).locationEmailAddress;
+    var locationEmailAddress = (req.query as any).locationEmailAddress;
     if (!locationEmailAddress) {
         res.status(400).send('locationEmailAddress is not found in request params');
     }
@@ -47,7 +43,7 @@ router.get('/placeById', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     var placesSvc = new placesGraphAPIService(token);
 
-    var roomId = (req.params as any).roomId;
+    var roomId = (req.query as any).roomId;
     if (!roomId) {
         res.status(400).send('roomId is not found in request params');
     }
@@ -60,7 +56,7 @@ router.get('/roomByDisplayName', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     var placesSvc = new placesGraphAPIService(token);
 
-    var roomId = (req.params as any).roomId;
+    var roomId = (req.query as any).roomId;
     if (!roomId) {
         res.status(400).send('roomId is not found in request params');
     }
@@ -99,6 +95,10 @@ router.get('/checkedInUsersInRoom', async function(req, res) {
 
     var result = await dataTableStorageService.getAllCheckedInUsersInRoomAndEvent(roomId, eventId);
     res.send(result);
+});
+
+router.get('*', function(req, res) {
+    res.status(404).send('Api not found');
 });
 
 export default router;

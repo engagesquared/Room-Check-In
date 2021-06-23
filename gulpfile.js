@@ -8,7 +8,11 @@ const argv = require("yargs").argv;
 const log = require("fancy-log");
 const path = require("path");
 
-const config = {};
+const config = {
+    staticFiles: ["./src/public/locales/en-AU/translation.json",
+        "./src/public/locales/en/translation.json",
+        "./src/public/locales/en-US/translation.json"]
+};
 
 // Set environment variables
 const env = argv.env;
