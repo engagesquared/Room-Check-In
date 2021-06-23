@@ -78,11 +78,11 @@ router.get('/loggedInUserDetails', async function(req, res) {
 });
 
 router.post('/checkIn', async function(req, res) {
-    var checkIn = (req.body as ICheckIn);
-    if (!checkIn) {
+    var checkIns = (req.body as ICheckIn[]);
+    if (!checkIns) {
         res.status(400).send('checkInUser is not found in request body');
     }
-    var result = await dataTableStorageService.checkIn(checkIn)
+    var result = await dataTableStorageService.checkIn(checkIns)
     res.send(result);
 });
 

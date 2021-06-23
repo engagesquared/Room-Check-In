@@ -23,6 +23,14 @@ variable "keyVault" {
     "certificateName" = "tab-room-check-in-certificate"
   }
 }
+
+variable "storage" {
+  type = map
+  default = {
+    "accountName" = "tabroomcheckinstorage"
+    "tableName" = "roomcheckin"
+  }
+}
 # Variables: END
 
 # Configure the Azure provider
@@ -96,6 +104,9 @@ resource "azurerm_app_service" "webApp" {
           "AUTH_AUTHORITYHOSTURL"                           = ""
           "AUTH_GRAPH_SCOPE"                                = ""
           "AUTH_TENANTID"                                   = ""
+          "AUTH_APP_CLIENTSECRET"                           = ""
+          "STORAGE_ACCOUNT_NAME"                            = ""
+          "STORAGE_ACCOUNT_KEY"                             = ""
           "ApplicationInsightsAgent_EXTENSION_VERSION"      = "~3"
           "DiagnosticServices_EXTENSION_VERSION"            = "~3"
           "EVENTS_GRAPH_API_URL"                            = ""
@@ -203,4 +214,17 @@ resource "azurerm_key_vault_certificate" "pemCertificate" {
       validity_in_months = 12
     }
   }
+}
+
+resource "azurerm_storage_account" "storageAccount" {
+  name                     = var.storage["accountName"]
+  location            = azurerm_resource_group.resourceGroup.location
+  resource_group_name = azurerm_resource_group.resourceGroup.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_table" "tableStorage" {
+  name                 = var.storage["tableName"]
+  storage_account_name = azurerm_storage_account.storageAccount.name
 }

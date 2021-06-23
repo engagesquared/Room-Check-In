@@ -17,7 +17,7 @@ export default class eventsGraphAPIService {
         });
     }
 
-    public async getMyEventAttendeesByLocationId(displayName: string): Promise<IAttendee[]> {
+    public async getMyEventAttendeesByLocationId(locationId: string): Promise<IAttendee[]> {
         return await [{
             type: "required",
             status: {
@@ -38,8 +38,8 @@ export default class eventsGraphAPIService {
                 },
             };
 
-            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$count=true&$filter=location/uniqueId eq '${displayName}'&$top=1`, requestConfig);
-            console.log(`getLoggedInUser::user is returned successfully`);
+            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$count=true&$filter=location/uniqueId eq '${locationId}'&$top=1`, requestConfig);
+            console.log(`getMyEventAttendeesByLocationId::user is returned successfully`);
 
             return response
                 && response.data.value ? Promise.resolve(response.data.value)
@@ -83,7 +83,7 @@ export default class eventsGraphAPIService {
             };
 
             const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$count=true&$filter=locationEmailAddress eq ${locationEmailAddress} and (formatDateTime(start,'dd/MM/yyyyT00:00:00Z') ge formatDateTime(utcNow(),'dd/MM/yyyyT00:00:00Z') and formatDateTime(end,'dd/MM/yyyyT00:00:00Z') le formatDateTime(utcNow(),'dd/MM/yyyyT00:00:00Z'))&$top=1`, requestConfig);
-            console.log(`getLoggedInUser::user is returned successfully`);
+            console.log(`getMyEventAttendeesByLocationEmailAddress::user is returned successfully`);
 
             return response
                 && response.data.value ? Promise.resolve(response.data.value)
