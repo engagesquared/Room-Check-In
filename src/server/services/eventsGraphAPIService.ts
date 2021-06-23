@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { placesAppSetting } from '../../appSettings';
-import { IAttendee } from '../../interfaces/IAttendee';
+import { IAttendee } from '../../interfaces/response/IAttendee';
 import { utilities } from '../../utilities';
 
-export default class EventsGraphAPIService {
+export default class eventsGraphAPIService {
     axiosInstance: AxiosInstance;
     token: string;
 

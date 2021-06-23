@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { usersAppSetting } from '../../appSettings';
-import { IUser } from '../../interfaces/IUser';
+import { IUser } from '../../interfaces/response/IUser';
 import { utilities } from '../../utilities';
 
 export default  class usersGraphAPIService {
@@ -17,7 +17,7 @@ export default  class usersGraphAPIService {
         });
     }
 
-    public async getLoggedInUser(): Promise<IUser> {
+    public async getLoggedInUserDetails(): Promise<IUser> {
         return {
             displayName: "Adele Vance",
             givenName: "Adele",
