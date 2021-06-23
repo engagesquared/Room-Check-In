@@ -15,6 +15,9 @@ export const useStyles = createUseStyles((theme: ITheme) => {
         '@global': {
             body: {
                 background: "#5358B3"
+            },
+            input: {
+                fontSize: "16px"
             }
         }
     };

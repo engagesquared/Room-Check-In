@@ -17,7 +17,8 @@ export const useStyles = createUseStyles((theme: ITheme) => {
                 background: "#5358B3"
             },
             input: {
-                width: "20em",
+                width: "calc(17em + 7px)",
+                fontSize: "16px"
             }
         }
     };

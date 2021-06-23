@@ -3,7 +3,8 @@ import "../../localization/localization";
 import { useTranslation } from "react-i18next";
 import { useStyles } from "./userSelection.styles";
 import { Flex, Checkbox, Text, Avatar, Button, Divider } from "@fluentui/react-northstar";
-import { PeoplePicker } from "@microsoft/mgt-react";
+import { AddNewUser } from "./addNewUser/addNewUser";
+import { AddNewVisitor } from "./addNewVisitor/addNewVisitor";
 
 export interface IUserSelectionProp {
     currentUserName: string;
@@ -14,6 +15,22 @@ export interface IUserSelectionProp {
 export const UserSelection = (props: IUserSelectionProp) => {
     const { t } = useTranslation();
     const classes = useStyles();
+    const [displayAddUser, setDisplayAddUser] = React.useState<Boolean>(false);
+    const [displayVisitor, setDisplayVisitor] = React.useState<Boolean>(false);
+    const [users, setUsers] = React.useState<{
+        name: string,
+        image?: string
+    }[]>([{ name: 'Ray Tanaka', image: 'https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/RobertTolbert.jpg' },
+    { name: 'Beth Davies', image: 'https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/ElviaAtkins.jpg' }]);
+
+    const updateUser = (userDetail: { name: string, email: string, phone: string }) => {
+        let tempUsers = users;
+        tempUsers.push({ name: userDetail.name, image: '' });
+        setUsers(tempUsers);
+        setDisplayVisitor(false);
+        setDisplayAddUser(false);
+    };
+
     return (
         <Flex column gap="gap.small">
             <Flex column gap="gap.small" style={{ padding: "2rem" }}>
@@ -22,30 +39,32 @@ export const UserSelection = (props: IUserSelectionProp) => {
                 <Text content={`jane.smith@optus.com.uk`} />
             </Flex>
             <Divider size={1} />
-            <Flex column gap="gap.small" style={{ padding: "0 2rem 2rem 2rem" }}>
-                <Text size="large" weight="bold" content={`Are these colleagues with you?`} />
-                <Flex>
-                    <Checkbox />
-                    <Avatar image="https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/RobertTolbert.jpg" />
-                    <Text content="Ray Tanaka" />
-                </Flex>
-                <Flex>
-                    <Checkbox />
-                    <Avatar image="https://fabricweb.azureedge.net/fabric-website/assets/images/avatar/ElviaAtkins.jpg" />
-                    <Text content="Beth Davies" />
-                </Flex>
-                <Text color="brand" content="+ Add another person" />
-                {/* <PeoplePicker placeholder=" " selectionMode="single" /> */}
-            </Flex>
-            <Flex column className="center" hAlign="center" vAlign="end"
+            {!displayAddUser && !displayVisitor ?
+                <Flex column gap="gap.small" style={{ padding: "0 2rem 2rem 2rem", height: "55vh" }}>
+                    <Text size="large" weight="bold" content={`Are these colleagues with you?`} />
+                    {users.map((user) =>
+                        <Flex vAlign="center">
+                            <Checkbox />
+                            {user.image ? <Avatar image={user.image} /> : <Avatar name={user.name} />}
+                            <Text style={{ paddingLeft: "1em" }} content={user.name} />
+                        </Flex>
+                    )}
+                    <Text color="brand" content="+ Add another person"
+                        onClick={() => { setDisplayAddUser(true); setDisplayVisitor(false); }} />
+                    <Text color="brand" content="+ Add visitor"
+                        onClick={() => { setDisplayAddUser(false); setDisplayVisitor(true); }} />
+                </Flex> :
+                displayAddUser ? <AddNewUser></AddNewUser> :
+                    displayVisitor ? <AddNewVisitor updateUser={updateUser}></AddNewVisitor> : <></>
+            }
+            <Flex column className={classes.center} hAlign="center" vAlign="end"
                 style={{
-                    position: "absolute",
-                    top: "calc(100% - 80px)",
                     background: "#F9F9F9",
                     padding: "1%",
                     width: "100%"
                 }}>
-                <Text size="large" weight="bold" content={`Location: ${props.selectedLocation}`} />
+                <Text size="large" weight="bold" style={{ padding: "1em" }}
+                    content={`Location: ${props.selectedLocation}`} />
                 <Button primary content="Check-in" onClick={() => {
                     props.updateCurrentPage("Success");
                 }} style={{ width: "20em" }} />
