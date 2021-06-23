@@ -17,7 +17,7 @@ router.get('/token', async function(req, res) {
     res.send(token);
 });
 
-router.get('/myEventAttendeesByLocationId', async function(req, res) {
+router.get('/myEventByLocationId', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     var eventsSvc = new eventsGraphAPIService(token);
 
@@ -26,11 +26,11 @@ router.get('/myEventAttendeesByLocationId', async function(req, res) {
         res.status(400).send('locationId is not found in request params');
     }
     
-    var result = await eventsSvc.getMyEventAttendeesByLocationId(locationId);
+    var result = await eventsSvc.getMyEventByLocationId(locationId);
     res.send(result);
 });
 
-router.get('/myEventAttendeesByLocationEmailAddress', async function(req, res) {
+router.get('/myEventByLocationEmailAddress', async function(req, res) {
     var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
     var eventsSvc = new eventsGraphAPIService(token);
 
@@ -39,7 +39,7 @@ router.get('/myEventAttendeesByLocationEmailAddress', async function(req, res) {
         res.status(400).send('locationEmailAddress is not found in request params');
     }
     
-    var result = await eventsSvc.getMyEventAttendeesByLocationEmailAddress(locationEmailAddress);
+    var result = await eventsSvc.getMyEventByLocationEmailAddress(locationEmailAddress);
     res.send(result);
 });
 
