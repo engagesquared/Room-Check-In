@@ -2,6 +2,7 @@ import { azureDataTableAppSetting } from "../../appSettings";
 import { constants } from "../../constants";
 import { ICheckIn as CheckedIn } from "../../interfaces/response/ICheckIn";
 import { ICheckIn } from "../../interfaces/request/ICheckIn";
+import {v4 as uuidv4} from 'uuid';
 
 const { TableClient, AzureNamedKeyCredential } = require("@azure/data-tables");
 
@@ -17,23 +18,25 @@ class dataTableStorageService {
         }
     }
 
-    public async checkIn(checkIn: ICheckIn) {
+    public async checkIn(checkIns: ICheckIn[]) {
         try {
             const client = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net`, constants.CHECKIN_TABLE_NAME, this.credential);
-            const testEntity = {
-                partitionKey: "P1",
-                rowKey: "R1",
-                user: {
-                    principalName: checkIn.user.userPrincipalName,
-                    displayName: checkIn.user.displayName,
-                    email: checkIn.user.mail
-                },
-                room: {
-                    id: checkIn.room.id,
-                    displayName: checkIn.room.displayName
-                }
-            };
-            await client.createEntity(testEntity);
+            checkIns.forEach(async checkIn => {
+                const dbEntity = {
+                    partitionKey: checkIn.room.displayName,
+                    rowKey: uuidv4(),
+                    user: {
+                        principalName: checkIn.user.userPrincipalName,
+                        displayName: checkIn.user.displayName,
+                        email: checkIn.user.mail
+                    },
+                    room: {
+                        id: checkIn.room.id,
+                        displayName: checkIn.room.displayName
+                    }
+                };
+                await client.createEntity(dbEntity);
+            }); 
         }
         catch (error) {
             throw error;
