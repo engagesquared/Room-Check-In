@@ -12,7 +12,7 @@ export interface IRoom {
     capacity: number;
     building?: string;
     floorNumber?: number;
-    isManaged?: boolean;
+    // isManaged?: boolean;
     isWheelChairAccessible: boolean;
     bookingType?: string;
     geoCoordinates?: IGeoCoordinates;

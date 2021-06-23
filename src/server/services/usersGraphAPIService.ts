@@ -17,19 +17,7 @@ export default  class usersGraphAPIService {
         });
     }
 
-    public async getLoggedInUserDetails(): Promise<IUser> {
-        return {
-            displayName: "Adele Vance",
-            givenName: "Adele",
-            jobTitle: "Retail Manager",
-            mail: "AdeleV@contoso.onmicrosoft.com",
-            mobilePhone: "+1 425 555 0109",
-            officeLocation: "18/2111",
-            surname: "Vance",
-            userPrincipalName: "AdeleV@contoso.onmicrosoft.com",
-            id: "87d349ed-44d7-43e1-9a83-5f2406dee5bd"
-        };
-        
+    public async getLoggedInUserDetails(): Promise<IUser | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -37,7 +25,7 @@ export default  class usersGraphAPIService {
                 },
             };
 
-            const response = await this.axiosInstance.get(`/users/me`, requestConfig);
+            const response = await this.axiosInstance.get(`/me`, requestConfig);
             console.log(`getLoggedInUser::user is returned successfully`);
 
             return response.data

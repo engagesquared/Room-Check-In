@@ -23,16 +23,17 @@
     "color": "icon-color.png"
   },
   "accentColor": "#D85028",
-  "configurableTabs": [
+  "configurableTabs": [],
+  "staticTabs": [
     {
-      "configurationUrl": "https://{{PUBLIC_HOSTNAME}}/roomCheckInTab/config.html?inTeamsSSO=True&name={loginHint}&tenant={tid}&group={groupId}&theme={theme}",
-      "canUpdateConfiguration": true,
-      "scopes": [
-        "team"
-      ]
+      "entityId": "cd95eda0-fd58-4e81-bc94-95e902a4b0e9",
+      "scopes": ["personal"],
+      "context":["personalTab"],
+      "name": "Location Checkin",
+      "contentUrl": "https://{{PUBLIC_HOSTNAME}}/roomCheckInTab",
+      "websiteUrl": "https://{{PUBLIC_HOSTNAME}}/roomCheckInTab"
     }
   ],
-  "staticTabs": [],
   "bots": [],
   "connectors": [],
   "composeExtensions": [],

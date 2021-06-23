@@ -9,9 +9,7 @@ const log = require("fancy-log");
 const path = require("path");
 
 const config = {
-    staticFiles: ["./src/public/locales/en-AU/translation.json",
-        "./src/public/locales/en/translation.json",
-        "./src/public/locales/en-US/translation.json"]
+    staticFiles: ["src/public/locales/*/**"]
 };
 
 // Set environment variables
