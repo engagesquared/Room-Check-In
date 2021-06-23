@@ -20,18 +20,33 @@ All required source code are located in the `./src` folder:
 For further details see the [Yo Teams documentation](https://github.com/PnP/generator-teams/docs)
 
 ## Azure Resources
-
-### Azure Web APP
-steps to create
-
-### Azure Registered APP
-steps to create
-
-### Azure Key Vault
-steps to create
+1. Review variables in **main.tf** file in **azureResources** folder and make sure all values are set properly
+2. Install the Azure CLI and Terraform CLI:
+   - Linux (WSL) or OSX, using Brew
+    ```bash
+    brew update && brew install azure-cli && brew install hashicorp/tap/terraform
+    ```
+   - Windows
+      - [Install or Update Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-powershell)
+      - [Install Terraform](https://www.terraform.io/downloads.html)
+3. In terminal: cd to **azureResources** folder & run below command to login to Azure of target environment (dev/test/uat/prod)
+    ```bash
+    az login --tenant <tenant-id>
+    ```
+4. In terminal: cd to **azureResources** folder &  run below command to review all changes:
+    ```bash
+    terraform init
+    ```
+5. In terminal: cd to **azureResources** folder &  run below command to apply all changes:
+    ```bash
+    terraform plan
+    ```
+6. In terminal: cd to **azureResources** folder & run below command to apply all changes:
+    ```bash
+    terraform apply -auto-approve
+    ```
 
 ## Building the app
-
 The application is built using the `build` Gulp task.
 
 ``` bash
@@ -54,7 +69,7 @@ Using the `yoteams-deploy` plugin, automatically added to the project, deploymen
 
 ## Configuration
 
-Configuration is stored in the `.env` file.
+Configuration is stored in the `.env` & `.development.env` file.
 
 ## Debug and test locally
 
