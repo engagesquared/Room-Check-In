@@ -4,6 +4,9 @@ node_modules
 # do not include the package in Git
 package
 temp
+terraform*
+.terraform
+.terraform.*
 
 # do not include the local environment files
 .env
