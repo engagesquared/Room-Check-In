@@ -49,8 +49,7 @@ For further details see the [Yo Teams documentation](https://github.com/PnP/gene
 ## Key Vault
 1. Navigate to key vault
 2. Go to Certificates
-3. Create new certificate of type PEM
-4. Download .CER file of certificate 
+3. Download .CER file of certificate *tab-room-check-in-certificate*
    
 ## Registered Application
 1. create new regitered application
