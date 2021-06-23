@@ -25,15 +25,8 @@ class dataTableStorageService {
                 const dbEntity = {
                     partitionKey: checkIn.room.displayName,
                     rowKey: uuidv4(),
-                    user: {
-                        principalName: checkIn.user.userPrincipalName,
-                        displayName: checkIn.user.displayName,
-                        email: checkIn.user.mail
-                    },
-                    room: {
-                        id: checkIn.room.id,
-                        displayName: checkIn.room.displayName
-                    }
+                    user: checkIn.user,
+                    room: checkIn.room
                 };
                 await client.createEntity(dbEntity);
             }); 
