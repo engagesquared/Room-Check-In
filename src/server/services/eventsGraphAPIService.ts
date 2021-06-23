@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { placesAppSetting } from '../../appSettings';
-import { IAttendee } from '../../interfaces/response/IAttendee';
-import { IEvent } from '../../interfaces/response/IEvent';
+import { IAttendee } from '../../interfaces/IAttendee';
+import { IEvent } from '../../interfaces/IEvent';
 import { utilities } from '../../utilities';
 
 export default class eventsGraphAPIService {
@@ -20,6 +20,7 @@ export default class eventsGraphAPIService {
 
     public async getMyEventDetailsId(eventId: string): Promise<IEvent> {
         return await {
+            id:"",
             subject: "subject",
             attendees: [{
                 type: "required",
@@ -84,6 +85,7 @@ export default class eventsGraphAPIService {
 
     public async getMyEventByLocationId(locationId: string): Promise<IEvent[]> {
         return await [{
+            id:"",
             subject: "subject",
             attendees: [{
                 type: "required",

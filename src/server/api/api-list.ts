@@ -5,7 +5,7 @@ import { constants } from "../../constants";
 import placesGraphAPIService from "../services/placesGraphAPIService";
 import usersGraphAPIService from "../services/usersGraphAPIService";
 import dataTableStorageService from "../services/dataTableStorageService";
-import { ICheckIn } from "../../interfaces/request/ICheckIn";
+import { ICheckIn } from "../../interfaces/ICheckIn";
 var router = Express.Router();
 
 router.get('*', function(req, res) {
