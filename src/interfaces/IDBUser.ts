@@ -5,5 +5,6 @@ export interface IDBUser extends IDBEntity{
     PrincipalName?: string;
     Email: string;
     Phone: string;
+    EmployeeId?: string;
     Id: string;
 }

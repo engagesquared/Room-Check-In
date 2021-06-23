@@ -68,6 +68,7 @@ class dataTableStorageService {
                         PrincipalName: user.userPrincipalName,
                         Email: user.mail ?? "",
                         Phone: user.mobilePhone ?? "",
+                        EmployeeId: user.employeeId ?? "",
                         Id: id
                     };
 
@@ -145,6 +146,7 @@ class dataTableStorageService {
             Email: "",
             PrincipalName: "",
             Phone: "",
+            EmployeeId: "",
             Id: ""
         },
         {
