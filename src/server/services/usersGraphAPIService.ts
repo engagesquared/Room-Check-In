@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { usersAppSetting } from '../../appSettings';
-import { IUser } from '../../interfaces/response/IUser';
+import { IUser } from '../../interfaces/IUser';
 import { utilities } from '../../utilities';
 
 export default  class usersGraphAPIService {

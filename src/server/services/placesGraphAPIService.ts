@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { placesAppSetting } from '../../appSettings';
-import { IRoom } from '../../interfaces/response/IRoom';
+import { IRoom } from '../../interfaces/IRoom';
 import { utilities } from '../../utilities';
 
 export default class placesGraphAPIService {
