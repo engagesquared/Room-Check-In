@@ -102,7 +102,7 @@ resource "azurerm_app_service" "webApp" {
           "APPINSIGHTS_SNAPSHOTFEATURE_VERSION"             = "1.0.0"
           "APPLICATIONINSIGHTS_CONNECTION_STRING"           = azurerm_application_insights.appInsights.connection_string
           "AUTH_APP_CERTIFICATE_THUMBPRINT"                 = ""
-          "AUTH_APP_CLIENTID"                               = "fa658af4-203d-420f-8101-4cf0481faade"
+          "AUTH_APP_CLIENTID"                               = ""
           "AUTH_APP_URI"                                    = ""
           "AUTH_AUTHORITYHOSTURL"                           = ""
           "AUTH_GRAPH_SCOPE"                                = ""

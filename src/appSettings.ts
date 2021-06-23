@@ -1,28 +1,31 @@
-
 export const authAppSetting = {
     clientId: process.env.AUTH_APP_CLIENTID?.trim() || "",
+    clientCertificate: {
+        thumbprint: process.env["AUTH_CERTIFICATE_THUMBPRINT"]?.trim() || "",
+        privateKey: "" //is loaded from keyvault secret
+    },
     clientSecret: process.env.AUTH_APP_CLIENTSECRET?.trim() || "",
     authority: `${process.env.AUTH_AUTHORITYHOSTURL?.trim()}/${process.env.AUTH_TENANTID?.trim()}/`,
 }
 
 export const keyVaultAppSetting = {
-    url: process.env.KEY_VAULT_URL?.trim(),
-    secretName: process.env.KEY_VAULT_SECRET_NAME?.trim()
+    url: process.env.KEY_VAULT_URL?.trim() || "",
+    secretName: process.env.KEY_VAULT_SECRET_NAME?.trim() || "",
 };
 
 export const azureDataTableAppSetting = {
-    accountName: process.env.STORAGE_ACCOUNT_NAME?.trim(),
-    accountKey: process.env.STORAGE_ACCOUNT_KEY?.trim()
+    accountName: process.env.STORAGE_ACCOUNT_NAME?.trim() || "",
+    accountKey: process.env.STORAGE_ACCOUNT_KEY?.trim() || ""
 };
 
 export const usersAppSetting = {
-    apiUrl: process.env.USERS_GRAPH_API_URL?.trim()
+    apiUrl: process.env.USERS_GRAPH_API_URL?.trim() || "",
 };
 
 export const eventAppSetting = {
-    apiUrl: process.env.EVENT_GRAPH_API_URL?.trim()
+    apiUrl: process.env.EVENT_GRAPH_API_URL?.trim() || "",
 };
 
 export const placesAppSetting = {
-    apiUrl: process.env.PLACES_GRAPH_API_URL?.trim()
+    apiUrl: process.env.PLACES_GRAPH_API_URL?.trim() || "",
 };
