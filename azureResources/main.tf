@@ -28,7 +28,10 @@ variable "storage" {
   type = map
   default = {
     "accountName" = "tabroomcheckinstorage"
-    "tableName" = "roomcheckin"
+    "userTableName" = "user"
+    "eventTableName" = "event"
+    "roomTableName" = "room"
+    "checkinTableName" = "checkin"
   }
 }
 # Variables: END
@@ -225,6 +228,21 @@ resource "azurerm_storage_account" "storageAccount" {
 }
 
 resource "azurerm_storage_table" "tableStorage" {
-  name                 = var.storage["tableName"]
+  name                 = var.storage["roomTableName"]
+  storage_account_name = azurerm_storage_account.storageAccount.name
+}
+
+resource "azurerm_storage_table" "tableStorage" {
+  name                 = var.storage["eventTableName"]
+  storage_account_name = azurerm_storage_account.storageAccount.name
+}
+
+resource "azurerm_storage_table" "tableStorage" {
+  name                 = var.storage["userTableName"]
+  storage_account_name = azurerm_storage_account.storageAccount.name
+}
+
+resource "azurerm_storage_table" "tableStorage" {
+  name                 = var.storage["checkinTableName"]
   storage_account_name = azurerm_storage_account.storageAccount.name
 }
