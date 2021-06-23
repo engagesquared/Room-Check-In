@@ -29,6 +29,7 @@
     "i18next": "^20.3.2",
     "i18next-xhr-backend": "^3.2.2",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "morgan": "1.9.1",
     "msteams-react-base-component": "^3.1.0",
     "react": "^16.8.6",

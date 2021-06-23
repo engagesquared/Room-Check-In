@@ -3,7 +3,7 @@ import { IRoom } from "./IRoom";
 import { IUser } from "./IUser";
 
 export interface ICheckIn {
-    user:IUser;
+    users:IUser[];
     room:IRoom;
     event:IEvent;
 }
