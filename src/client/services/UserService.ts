@@ -3,7 +3,6 @@ import axios from "axios";
 import { IUser } from '../../interfaces/IUser';
 import { getClientSideToken } from "./AuthService";
 
-
 export const getLoggedInUserDetails = async (): Promise<IUser | undefined> => {
     try {
         const clientSideToken = await getClientSideToken();

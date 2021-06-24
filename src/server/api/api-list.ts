@@ -8,6 +8,14 @@ import dataTableStorageService from "../services/dataTableStorageService";
 import { ICheckIn } from "../../interfaces/ICheckIn";
 var router = Express.Router();
 
+router.get('*', function(req, res) {
+    res.status(404).send('Api not found');
+});
+
+router.post('*', function(req, res) {
+    res.status(404).send('Api not found');
+});
+
 router.get('/token', async function(req, res) {
     try {
         var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
@@ -93,7 +101,7 @@ router.get('/roomByDisplayName', async function(req, res) {
 
         var displayName = req.query.displayName as string;
         if (!displayName) {
-            res.status(400).send('roomId is not found in request params');
+            res.status(400).send('displayName is not found in request params');
             return;
         }
         
@@ -138,15 +146,6 @@ router.get('/loggedInUserDetails', async function(req, res) {
     }
 });
 
-router.post('/checkIn', async function(req, res) {
-    var checkIns = (req.body as ICheckIn[]);
-    if (!checkIns) {
-        res.status(400).send('checkInUser is not found in request body');
-    }
-    var result = await dataTableStorageService.checkIn(checkIns)
-    res.send(result);
-});
-
 router.get('/checkedInUsersInRoom', async function(req, res) {
     var roomId = (req.params as any).roomId;
     var eventId = (req.params as any).eventId;
@@ -162,8 +161,14 @@ router.get('/checkedInUsersInRoom', async function(req, res) {
     res.send(result);
 });
 
-router.get('*', function(req, res) {
-    res.status(404).send('Api not found');
+router.post('/checkIns', async function(req, res) {
+    var checkIns = (req.body as ICheckIn[]);
+    if (!checkIns) {
+        res.status(400).send('checkIns are not found in request body');
+    }
+    var result = await dataTableStorageService.addCheckIns(checkIns);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(result);
 });
 
 export default router;
