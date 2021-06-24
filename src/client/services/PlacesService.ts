@@ -6,7 +6,6 @@ import { IEvent } from "../../interfaces/IEvent";
 import { ICheckIn } from "../../interfaces/ICheckIn";
 import { getClientSideToken } from "./AuthService";
 
-
 export const getRoomByDisplayName = async (roomName: string): Promise<IRoom | undefined> => {
     try {
         const clientSideToken = await getClientSideToken();
@@ -31,7 +30,7 @@ export const getRoomById = async (roomId: string): Promise<IRoom | undefined> =>
     }
 }
 
-export const getColleagues = async (locationEmailAddress: string): Promise<IAttendee[]> => {
+export const getAttendees = async (locationEmailAddress: string): Promise<IAttendee[]> => {
     try {
         const clientSideToken = await getClientSideToken();
         const res: any = await axios.get(`/api/myEventAttendeesByLocationEmailAddress?locationEmailAddress=${locationEmailAddress}`
