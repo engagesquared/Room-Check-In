@@ -10,6 +10,8 @@ import { IRoom } from "../../../interfaces/IRoom";
 import { getColleagues } from "../../services/PlacesService";
 import { IAttendee } from "../../../interfaces/IAttendee";
 import { People } from "@microsoft/mgt-react";
+import { addCheckIns } from "../../services/DataTableService";
+import { ICheckIn } from "../../../interfaces/ICheckIn";
 
 export interface IUserSelectionProp {
     currentUserName: string;
@@ -21,10 +23,56 @@ export interface IUserSelectionProp {
 export const UserSelection = (props: IUserSelectionProp) => {
     const { t } = useTranslation();
     const classes = useStyles();
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [displayAddUser, setDisplayAddUser] = React.useState<Boolean>(false);
     const [displayVisitor, setDisplayVisitor] = React.useState<Boolean>(false);
     const [users, setUsers] = React.useState<IAttendee[]>([]);
+    const [isError, setIsError] = React.useState<boolean>(false);
 
+    const onCheckIn = async () => {
+        try {
+            setIsLoading(true);
+            const checkIns: ICheckIn[] = [{
+                users:[{
+                    displayName:"user",
+                    mail: "email",
+                    principalName: "upn",
+                    phone:"phone",
+                    employeeId: "empId"
+                },
+                {
+                    displayName:"user",
+                    mail: "email",
+                    phone:"phone",
+                }],
+                event: {
+                    id: "id",
+                    subject: "subject",
+                    start: new Date().toISOString(),
+                    end: new Date().toISOString(),
+                    locationDisplayName: "location-name",
+                    locationEmail: "location-email"
+                },
+                room:{
+                    id: props.selectedLocationDetail.id,
+                    emailAddress: props.selectedLocationDetail.emailAddress,
+                    displayName: props.selectedLocationDetail.displayName,
+                    phone: props.selectedLocationDetail.phone ?? "",
+                    capacity: props.selectedLocationDetail.capacity,
+                    building: props.selectedLocationDetail.building ?? ""
+                }
+            }];
+            const checkInsAdded = await addCheckIns(checkIns);
+            if (checkInsAdded) {
+                props.updateCurrentPage("Success", checkInsAdded);
+            } else {
+                setIsLoading(false);
+                setIsError(true);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     React.useEffect(() => {
         (async () => {
@@ -88,10 +136,8 @@ export const UserSelection = (props: IUserSelectionProp) => {
                     width: "100%"
                 }}>
                 <Text size="large" weight="bold" style={{ padding: "1em" }}
-                    content={`Location: ${props.selectedLocationDetail?.label}`} />
-                <Button primary content="Check-in" onClick={() => {
-                    props.updateCurrentPage("Success");
-                }} style={{ width: "20em" }} />
+                    content={`Location: ${props.selectedLocationDetail?.displayName}`} />
+                <Button primary content="Check-in" onClick={onCheckIn} loading={isLoading} style={{ width: "20em" }} />
             </Flex>
         </Flex>
     );

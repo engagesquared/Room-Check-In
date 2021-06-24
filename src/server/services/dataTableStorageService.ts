@@ -28,7 +28,7 @@ class dataTableStorageService {
         }
     }
 
-    public async checkIn(checkIns: ICheckIn[]): Promise<IDBCheckIn[]> {
+    public async addCheckIns(checkIns: ICheckIn[]): Promise<IDBCheckIn[]> {
         try {
             const checkInsAdded: IDBCheckIn[] = [];
             const client = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net`, constants.CHECKIN_TABLE_NAME, this.credential);

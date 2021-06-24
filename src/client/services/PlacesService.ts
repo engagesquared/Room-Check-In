@@ -10,7 +10,7 @@ import { getClientSideToken } from "./AuthService";
 export const getRoomByDisplayName = async (roomName: string): Promise<IRoom | undefined> => {
     try {
         const clientSideToken = await getClientSideToken();
-        const res: any = await axios.get(`/api/roomByDisplayName?roomId=${roomName}`
+        const res: any = await axios.get(`/api/roomByDisplayName?displayName=${roomName}`
             , { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
         return res?.data;
     } catch (error) {
@@ -34,7 +34,7 @@ export const getRoomById = async (roomId: string): Promise<IRoom | undefined> =>
 export const getColleagues = async (locationEmailAddress: string): Promise<IAttendee[]> => {
     try {
         const clientSideToken = await getClientSideToken();
-        const res: any = await axios.get(`/api/myEventByLocationEmailAddress?locationEmailAddress=${locationEmailAddress}`
+        const res: any = await axios.get(`/api/myEventAttendeesByLocationEmailAddress?locationEmailAddress=${locationEmailAddress}`
             , { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
         return res?.data;
     } catch (error) {
@@ -53,16 +53,6 @@ export const getEventByLocationId = async (locationId: string): Promise<IEvent[]
     } catch (error) {
         console.error(error);
         return [];
-    }
-}
-
-export const checkInUser = async (checkInObject: ICheckIn): Promise<void> => {
-    try {
-        const clientSideToken = await getClientSideToken();
-        const res: any = await axios.post(`/api/checkIn`, checkInObject,
-            { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
-    } catch (error) {
-        console.error(error);
     }
 }
 

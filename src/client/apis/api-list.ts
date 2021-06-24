@@ -3,7 +3,8 @@ import { IUser } from '../../interfaces/IUser';
 import { IRoom } from '../../interfaces/IRoom';
 import { IEvent } from '../../interfaces/IEvent';
 import { IAttendee } from '../../interfaces/IAttendee';
-
+import { ICheckIn } from "../../interfaces/ICheckIn";
+import { IDBCheckIn } from "../../interfaces/IDBCheckIn";
 
 export const getLoggedInUserDetails = async () => {
     const userDetailsRes = await axiosDecorator.get("/api/loggedInUserDetails");
@@ -29,8 +30,8 @@ export const getRoomLocationByEmailAddress = async (emailAddress: string) => {
     return roomLocation;
 }
 
-export const getMyEventIAttendeesByLocationEmailAddress = async (emailAddress: string) => {
-    const attendeesRes = await axiosDecorator.get(`/api/myEventIAttendeesByLocationEmailAddress?locationEmailAddress=${emailAddress}`);
+export const getMyEventAttendeesByLocationEmailAddress = async (emailAddress: string) => {
+    const attendeesRes = await axiosDecorator.get(`/api/myEventAttendeesByLocationEmailAddress?locationEmailAddress=${emailAddress}`);
     const attendees: IAttendee[] = attendeesRes.data;
     return attendees;
 }
@@ -45,4 +46,10 @@ export const getMyEventDetailsId = async (eventId: string) => {
     const eventRes = await axiosDecorator.get(`/api/myEventDetailsId?eventId=${eventId}`);
     const event: IEvent = eventRes.data;
     return event;
+}
+
+export const addCheckIns = async (checkIns: ICheckIn[]) => {
+    const checkInsRes = await axiosDecorator.post(`/api/checkIns`,checkIns);
+    const checkInsAdded: IDBCheckIn[] = checkInsRes.data;
+    return checkInsAdded;
 }
