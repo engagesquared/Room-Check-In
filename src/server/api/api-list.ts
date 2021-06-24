@@ -8,14 +8,6 @@ import dataTableStorageService from "../services/dataTableStorageService";
 import { ICheckIn } from "../../interfaces/ICheckIn";
 var router = Express.Router();
 
-router.get('*', function (req, res) {
-    res.status(404).send('Api not found');
-});
-
-router.post('*', function (req, res) {
-    res.status(404).send('Api not found');
-});
-
 router.get('/token', async function (req, res) {
     try {
         var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
@@ -229,6 +221,14 @@ router.post('/checkIns', async function (req, res) {
     var result = await dataTableStorageService.addCheckIns(checkIns);
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
+});
+
+router.get('*', function (req, res) {
+    res.status(404).send('Api not found');
+});
+
+router.post('*', function (req, res) {
+    res.status(404).send('Api not found');
 });
 
 export default router;
