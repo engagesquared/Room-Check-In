@@ -9,7 +9,7 @@ import { Success } from "../components/success/success";
 import { UserSelection } from "../components/userSelection/userSelection";
 import { Providers } from "@microsoft/mgt-react";
 import { MgtTokenProvider } from "../providers/MgtProvider";
-import { getLoggedInUserDetails } from "../services/UserService";
+import { getLoggedInUserDetails} from "../services/UserService";
 import { IUser } from "../../interfaces/IUser";
 
 const provider = new MgtTokenProvider();

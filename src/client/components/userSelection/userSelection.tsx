@@ -7,11 +7,13 @@ import { AddNewUser } from "./addNewUser/addNewUser";
 import { AddNewVisitor } from "./addNewVisitor/addNewVisitor";
 import { IUser } from "../../../interfaces/IUser";
 import { IRoom } from "../../../interfaces/IRoom";
-import { getColleagues } from "../../services/PlacesService";
+import { getAttendees } from "../../services/PlacesService";
+import { getUserDetailsByPrincipalName } from "../../services/UserService";
 import { IAttendee } from "../../../interfaces/IAttendee";
 import { People } from "@microsoft/mgt-react";
 import { addCheckIns } from "../../services/DataTableService";
 import { ICheckIn } from "../../../interfaces/ICheckIn";
+import { IUserAdd } from "../../../interfaces/IUserAdd";
 
 export interface IUserSelectionProp {
     currentUserName: string;
@@ -26,24 +28,25 @@ export const UserSelection = (props: IUserSelectionProp) => {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [displayAddUser, setDisplayAddUser] = React.useState<Boolean>(false);
     const [displayVisitor, setDisplayVisitor] = React.useState<Boolean>(false);
-    const [users, setUsers] = React.useState<IAttendee[]>([]);
+    const [attendees, setAttendees] = React.useState<IAttendee[]>([]);
+    const [usersAdd, setUsersAdd] = React.useState<IUserAdd[]>([]);
     const [isError, setIsError] = React.useState<boolean>(false);
 
     const onCheckIn = async () => {
         try {
             setIsLoading(true);
             const checkIns: ICheckIn[] = [{
-                users:[{
-                    displayName:"user",
+                users: [{
+                    displayName: "user",
                     mail: "email",
                     principalName: "upn",
-                    phone:"phone",
+                    phone: "phone",
                     employeeId: "empId"
                 },
                 {
-                    displayName:"user",
+                    displayName: "user",
                     mail: "email",
-                    phone:"phone",
+                    phone: "phone",
                 }],
                 event: {
                     id: "id",
@@ -53,7 +56,7 @@ export const UserSelection = (props: IUserSelectionProp) => {
                     locationDisplayName: "location-name",
                     locationEmail: "location-email"
                 },
-                room:{
+                room: {
                     id: props.selectedLocationDetail.id,
                     emailAddress: props.selectedLocationDetail.emailAddress,
                     displayName: props.selectedLocationDetail.displayName,
@@ -77,27 +80,38 @@ export const UserSelection = (props: IUserSelectionProp) => {
     React.useEffect(() => {
         (async () => {
             if (props.selectedLocationDetail) {
-                const currentUserDetail = await getColleagues(props.selectedLocationDetail.emailAddress);
-                setUsers(currentUserDetail);
+                let usersAdd: IUserAdd[] = [];
+                const attendees = await getAttendees(props.selectedLocationDetail.emailAddress);
+                setAttendees(attendees);
             }
         })();
-    }, [getColleagues, props.selectedLocationDetail]);
+    }, [getAttendees, props.selectedLocationDetail]);
 
-    const updateUser = (userDetail: { name: string, email: string, phone: string }) => {
-        let tempUsers = users;
-        let newUserDetail = {
-            type: "external",
-            status: {
-                response: "none",
-                time: "0001-01-01T00:00:00Z"
-            },
-            emailAddress: {
-                name: `${userDetail.name}`,
-                address: `${userDetail.email}`
+    const updateUser = (visitorUserDetail: { name: string, email: string, phone: string }) => {
+        // add visitor
+        usersAdd.push({
+            displayName: visitorUserDetail.name,
+            mail: visitorUserDetail.email,
+            phone: visitorUserDetail.phone
+        });
+
+        // TODO: add all attendees that are not checked in
+        /*
+        attendees.forEach(async attendee => {
+            let user = await getUserDetailsByPrincipalName(attendee.emailAddress.address);
+            if (user) {
+                usersAdd.push({
+                    displayName: user.displayName,
+                    principalName: user.userPrincipalName,
+                    mail: user.mail ?? "",
+                    phone: user.mobilePhone ?? "",
+                    employeeId: user.employeeId ?? ""
+                });
             }
-        };
-        tempUsers.push(newUserDetail);
-        setUsers(tempUsers);
+        });
+        */
+
+        setUsersAdd(usersAdd);
         setDisplayVisitor(false);
         setDisplayAddUser(false);
     };
@@ -106,19 +120,19 @@ export const UserSelection = (props: IUserSelectionProp) => {
         <Flex column gap="gap.small">
             <Flex column gap="gap.small" style={{ padding: "2rem" }}>
                 <Text size="large" weight="bold" content={`${props.currentUserDetail.displayName}`} />
-                <Text content={`Job Title: ${props.currentUserDetail.jobTitle}`} />
+                <Text content={`Job Title: ${props.currentUserDetail.jobTitle ?? ""}`} />
                 <Text content={`${props.currentUserDetail.mail}`} />
             </Flex>
             <Divider size={1} />
             {!displayAddUser && !displayVisitor ?
                 <Flex column gap="gap.small" style={{ padding: "0 2rem 2rem 2rem", height: "55vh" }}>
                     <Text size="large" weight="bold" content={`Are these colleagues with you?`} />
-                    {users.map((user) =>
+                    {attendees.map((attendee) =>
                         <Flex vAlign="center">
                             <Checkbox />
-                            {user.type !== "external" ? <People peopleQueries={[user.emailAddress.address]} /> :
-                                <Avatar name={user.emailAddress.name} />}
-                            <Text content={user.emailAddress.name} />
+                            {attendee.type !== "external" ? <People peopleQueries={[attendee.emailAddress.address]} /> :
+                                <Avatar name={attendee.emailAddress.name} />}
+                            <Text content={attendee.emailAddress.name} />
                         </Flex>
                     )}
                     <Text color="brand" content="+ Add another person" className={classes.pointer}

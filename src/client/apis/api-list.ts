@@ -12,6 +12,18 @@ export const getLoggedInUserDetails = async () => {
     return userDetails;
 }
 
+export const getUserDetailsById = async (id:string) => {
+    const userDetailsRes = await axiosDecorator.get(`/api/userDetailsById?userId=${id}`);
+    const userDetails: IUser = userDetailsRes.data;
+    return userDetails;
+}
+
+export const getUserDetailsByPrincipalName = async (upn:string) => {
+    const userDetailsRes = await axiosDecorator.get(`/api/userDetailsByPrincipalName?upn=${upn}`);
+    const userDetails: IUser = userDetailsRes.data;
+    return userDetails;
+}
+
 export const getRoomById = async (id: string) => {
     const roomRes = await axiosDecorator.get(`/api/roomById?roomId=${id}`);
     const room: IRoom = roomRes.data;
