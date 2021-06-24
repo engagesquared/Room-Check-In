@@ -1,8 +1,7 @@
 import { IDBEntity } from "./IDBEntity";
 
-export interface IDBCheckIn extends IDBEntity{    
-    EventId:string;
-    RoomId:string;
-    UserDisplayName: string;
-    UserId: string
+export interface IDBCheckIn extends IDBEntity{
+    userId:string;
+    roomId:string;
+    eventId:string;
 }

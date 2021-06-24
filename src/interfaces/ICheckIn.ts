@@ -1,9 +1,9 @@
-import { IEvent } from "./IEvent";
-import { IRoom } from "./IRoom";
-import { IUser } from "./IUser";
+import { IUserAdd } from "./IUserAdd";
+import { IRoomAdd } from "./IRoomAdd";
+import { IEventAdd } from "./IEventAdd";
 
 export interface ICheckIn {
-    users:IUser[];
-    room:IRoom;
-    event:IEvent;
+    users:IUserAdd[];
+    room:IRoomAdd;
+    event:IEventAdd;
 }

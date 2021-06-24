@@ -1,10 +1,10 @@
 import { IDBEntity } from "./IDBEntity";
 
 export interface IDBUser extends IDBEntity{    
-    DisplayName: string;
-    PrincipalName?: string;
-    Email: string;
-    Phone: string;
-    EmployeeId?: string;
-    Id: string;
+    displayName: string;
+    principalName?: string;
+    mail: string;
+    phone: string;
+    employeeId?: string;
+    id?: string;
 }
