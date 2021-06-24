@@ -2,14 +2,16 @@ import { azureDataTableAppSetting } from "../../appSettings";
 import { constants } from "../../constants";
 import { IDBCheckIn } from "../../interfaces/IDBCheckIn";
 import { ICheckIn } from "../../interfaces/ICheckIn";
+import { IDBRoom } from "../../interfaces/IDBRoom";
 import { v4 as uuidv4 } from 'uuid';
-import { IUser } from "../../interfaces/IUser";
-import { IRoom } from "../../interfaces/IRoom";
-import { IEvent } from "../../interfaces/IEvent";
+import { IDBUserAdd } from "../../interfaces/IDBUserAdd";
+import { IDBRoomAdd } from "../../interfaces/IDBRoomAdd";
+import { IRoomAdd } from "../../interfaces/IRoomAdd";
 import { IDBEvent } from "../../interfaces/IDBEvent";
-import { IAttendee } from "../../interfaces/IAttendee";
 import { IDBUser } from "../../interfaces/IDBUser";
-import usersGraphAPIService from "./usersGraphAPIService";
+import { IDBEventAdd } from "../../interfaces/IDBEventAdd";
+import { IEventAdd } from "../../interfaces/IEventAdd";
+import { IUserAdd } from "../../interfaces/IUserAdd";
 const lodashArray = require('lodash/array');
 
 const { TableClient, AzureNamedKeyCredential } = require("@azure/data-tables");
@@ -26,50 +28,50 @@ class dataTableStorageService {
         }
     }
 
-    public async checkIn(checkIns: ICheckIn[]) {
+    public async checkIn(checkIns: ICheckIn[]): Promise<IDBCheckIn[]> {
         try {
+            const checkInsAdded: IDBCheckIn[] = [];
             const client = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net`, constants.CHECKIN_TABLE_NAME, this.credential);
             checkIns.forEach(async checkIn => {
                 const usersAdded = await this.addUsers(checkIn.users);
-                const roomId = await this.addRoom(checkIn.room);
-                const eventId = await this.addEvent(checkIn.event);
+                const roomAdded = await this.addRoom(checkIn.room);
+                const eventAdded = await this.addEvent(checkIn.event);
 
                 await Promise.all(usersAdded.map((async userAdded => {
                     const dbEntity: IDBCheckIn = {
                         PartitionKey: checkIn.room.displayName,
-                        RowKey: uuidv4(),
-                        EventId: eventId,
-                        RoomId: roomId,
-                        UserId: userAdded.Id,
-                        UserDisplayName: userAdded.DisplayName
+                        RowKey: `${roomAdded.id}-${eventAdded.id}`,
+                        eventId: eventAdded.id,
+                        roomId: roomAdded.id,
+                        userId: userAdded.RowKey
                     };
                     await client.createEntity(dbEntity);
+                    checkInsAdded.push(dbEntity);
                 })));
-
             });
+            return checkInsAdded;
         }
         catch (error) {
             throw error;
         }
     }
 
-    private async addUsers(users: IUser[]): Promise<IDBUser[]> {
+    private async addUsers(users: IUserAdd[]): Promise<IDBUser[]> {
         try {
             const usersAdded: IDBUser[] = [];
             await Promise.all(users.map((async user => {
-                const userClientCheck = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.USER_TABLE_NAME}()?$filter=DisplayName%20eq%20'${user.displayName}'%20or%Email%20eq%20'${user?.mail}'&$top=1`, constants.USER_TABLE_NAME, this.credential);
+                const userClientCheck = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.USER_TABLE_NAME}()?$filter=displayName%20eq%20'${user.displayName}'%20or%mail%20eq%20'${user?.mail}'&$top=1`, constants.USER_TABLE_NAME, this.credential);
                 const userFound: IDBUser[] = await userClientCheck.listEntities();
                 if (userFound.length == 0) {
-                    const id = uuidv4();
-                    const dbEntity: IDBUser = {
+                    const dbEntity: IDBUserAdd = {
                         PartitionKey: user.displayName,
-                        RowKey: id,
-                        DisplayName: user.displayName,
-                        PrincipalName: user.userPrincipalName,
-                        Email: user.mail ?? "",
-                        Phone: user.mobilePhone ?? "",
-                        EmployeeId: user.employeeId ?? "",
-                        Id: id
+                        RowKey: uuidv4(),
+                        displayName: user.displayName,
+                        principalName: user.principalName,
+                        mail: user.mail ?? "",
+                        phone: user.phone ?? "",
+                        employeeId: user.employeeId ?? "",
+                        id: user.id ?? ""
                     };
 
                     const client = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net`, constants.USER_TABLE_NAME, this.credential);
@@ -87,91 +89,87 @@ class dataTableStorageService {
         }
     }
 
-    private async addRoom(room: IRoom): Promise<string> {
+    private async addRoom(room: IRoomAdd): Promise<IDBRoom> {
         try {
             const roomClientCheck = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.ROOM_TABLE_NAME}()?$filter=Id%20eq%20'${room.id}'&$top=1`, constants.ROOM_TABLE_NAME, this.credential);
-            const roomFound: IDBUser[] = await roomClientCheck.listEntities();
-            if (roomFound.length != 0) return roomFound[0].Id;
+            const roomFound: IDBRoom[] = await roomClientCheck.listEntities();
+            if (roomFound.length != 0) return roomFound[0];
 
-            const id = uuidv4();
             const client = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net`, constants.ROOM_TABLE_NAME, this.credential);
-            const dbEntity = {
+            const dbEntity: IDBRoomAdd = {
                 PartitionKey: room.displayName,
-                RowKey: id,
-                DisplayName: room.displayName,
-                Building: room.building,
-                Capacity: room.capacity,
-                EmailAddress: room.emailAddress,
-                Id: id
+                RowKey: uuidv4(),
+                displayName: room.displayName,
+                building: room.building,
+                capacity: room.capacity,
+                emailAddress: room.emailAddress,
+                id: room.id
             };
             await client.createEntity(dbEntity);
-            return id;
+            return dbEntity;
         }
         catch (error) {
             throw error;
         }
     }
 
-    private async addEvent(event: IEvent): Promise<string> {
+    private async addEvent(event: IEventAdd): Promise<IDBEvent> {
         try {
             const eventClientCheck = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.EVENT_TABLE_NAME}()?$filter=Id%20eq%20'${event.id}'&$top=1`, constants.EVENT_TABLE_NAME, this.credential);
-            const eventFound: IDBUser[] = await eventClientCheck.listEntities();
-            if (eventFound.length != 0) return eventFound[0].Id;
+            const eventFound: IDBEvent[] = await eventClientCheck.listEntities();
+            if (eventFound.length != 0) return eventFound[0];
 
-            const id = uuidv4();
             const client = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net`, constants.EVENT_TABLE_NAME, this.credential);
-            const dbEntity = {
+            const dbEntity: IDBEventAdd = {
                 PartitionKey: event.subject,
-                RowKey: id,
-                Subject: event.subject,
-                StartTime: event.start,
-                EndTime: event.end,
-                LocationDisplayName: event.location.displayName,
-                LocationEmail: event.location.locationEmailAddress,
-                Id: id
+                RowKey: uuidv4(),
+                subject: event.subject,
+                start: event.start,
+                end: event.end,
+                locationDisplayName: event.locationDisplayName,
+                locationEmail: event.locationEmail,
+                id: event.id
             };
             await client.createEntity(dbEntity);
-            return id;
+            return dbEntity;
         }
         catch (error) {
             throw error;
         }
     }
 
-    public async getAllCheckedInUsersInRoomAndEvent(roomId: string,eventId: string): Promise<IDBUser[]> {
+    public async getAllCheckedInUsersInRoomAndEvent(roomId: string, eventId: string): Promise<IDBUser[]> {
         return await [{
             PartitionKey: "",
             RowKey: "",
-            DisplayName: "",
-            Email: "",
-            PrincipalName: "",
-            Phone: "",
-            EmployeeId: "",
-            Id: ""
+            displayName: "",
+            mail: "",
+            principalName: "",
+            phone: "",
+            employeeId: "",
+            id: ""
         },
         {
             PartitionKey: "",
             RowKey: "",
-            DisplayName: "",
-            Phone: "",
-            Email: "",
-            Id: ""
+            displayName: "",
+            phone: "",
+            mail: ""
         },
         {
             PartitionKey: "",
             RowKey: "",
-            DisplayName: "",
-            Phone: "",
-            Email: "",
-            Id: ""
+            displayName: "",
+            phone: "",
+            mail: ""
         }];
 
-        const checkInClient = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.CHECKIN_TABLE_NAME}()?$filter=RoomId%20eq%20$'${roomId}'%20and%20'EventId%20eq%20'${eventId}')`, constants.CHECKIN_TABLE_NAME, this.credential);
+        const checkInClient = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.CHECKIN_TABLE_NAME}()?$filter=RowKey%20eq%20$'${roomId}-${eventId}')`, constants.CHECKIN_TABLE_NAME, this.credential);
         const roomCheckIns: IDBCheckIn[] = await checkInClient.listEntities();
-        const userIds: string[] = roomCheckIns.map((chechIn) => { return `'${chechIn.UserId}'` });
+        const userIds: string[] = roomCheckIns.map((chechIn) => { return `'${chechIn.userId}'` });
         const userIdsToFind: string = lodashArray.join(userIds, ',');
 
-        const userClient = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.USER_TABLE_NAME}()?$filter=Id%20in%20(${userIdsToFind})`, constants.USER_TABLE_NAME, this.credential);
+        const userClient = new TableClient(`https://${azureDataTableAppSetting.accountName}.table.core.windows.net/${constants.USER_TABLE_NAME}()?$filter=RowKey%20in%20(${userIdsToFind})`, constants.USER_TABLE_NAME, this.credential);
         const RoomUsers: IDBUser[] = await userClient.listEntities();
 
         return RoomUsers;
