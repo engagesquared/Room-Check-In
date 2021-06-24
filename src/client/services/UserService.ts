@@ -1,14 +1,15 @@
-import { constants } from "../../constants";
-import axios from "axios";
 import { IUser } from '../../interfaces/IUser';
-import { getClientSideToken } from "./AuthService";
+import {
+    getLoggedInUserDetails as getLoggedInUserDetailsApi,
+    getUserDetailsById as getUserDetailsByIdApi,
+    getUserDetailsByPrincipalName as getUserDetailsByPrincipalNameApi,
+    getUserDetailsByDisplayName as getUserDetailsByDisplayNameApi
+} from "../apis/api-list";
 
 export const getLoggedInUserDetails = async (): Promise<IUser | undefined> => {
     try {
-        const clientSideToken = await getClientSideToken();
-        const res: any = await axios.get(`/api/loggedInUserDetails`
-            , { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
-        return res?.data;
+        const userDetails = await getLoggedInUserDetailsApi();
+        return userDetails;
     } catch (error) {
         console.error(error);
         return undefined;
@@ -17,10 +18,8 @@ export const getLoggedInUserDetails = async (): Promise<IUser | undefined> => {
 
 export const getUserDetailsById = async (id:string): Promise<IUser | undefined> => {
     try {
-        const clientSideToken = await getClientSideToken();
-        const res: any = await axios.get(`/api/userDetailsById?id=${id}`
-            , { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
-        return res?.data;
+        const userDetails = await getUserDetailsByIdApi(id);
+        return userDetails;
     } catch (error) {
         console.error(error);
         return undefined;
@@ -29,10 +28,8 @@ export const getUserDetailsById = async (id:string): Promise<IUser | undefined> 
 
 export const getUserDetailsByPrincipalName = async (upn:string): Promise<IUser | undefined> => {
     try {
-        const clientSideToken = await getClientSideToken();
-        const res: any = await axios.get(`/api/userDetailsByPrincipalName?upn=${upn}`
-            , { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
-        return res?.data;
+        const userDetails = await getUserDetailsByPrincipalNameApi(upn);
+        return userDetails;
     } catch (error) {
         console.error(error);
         return undefined;
@@ -41,10 +38,8 @@ export const getUserDetailsByPrincipalName = async (upn:string): Promise<IUser |
 
 export const getUserDetailsByDisplayName = async (displayName: string): Promise<IUser | undefined> => {
     try {
-        const clientSideToken = await getClientSideToken();
-        const res: any = await axios.get(`/api/userDetailsByDisplayName?displayName=${displayName}`
-            , { headers: { [constants.APP_ACCESS_TOKEN_HEADER]: clientSideToken } });
-        return res?.data;
+        const userDetails = await getUserDetailsByDisplayNameApi(displayName);
+        return userDetails;
     } catch (error) {
         console.error(error);
         return undefined;

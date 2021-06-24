@@ -8,195 +8,145 @@ import dataTableStorageService from "../services/dataTableStorageService";
 import { ICheckIn } from "../../interfaces/ICheckIn";
 var router = Express.Router();
 
-router.get('/token', async function (req, res) {
+router.post('/token', async function (req, res) {
     try {
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
+        var token = await AuthenticationService.getAccessToken(req.body.ssoToken);
         res.send(token);
     } catch (e) {
         res.status(500).send(e);
     }
 });
 
-router.get('/myEventByLocationId', async function (req, res) {
-    try {
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var eventsSvc = new eventsGraphAPIService(token);
+router.get('/myEventByLocationId', (req, res) => authorizedApi(req, res, async (token) => {
+    var eventsSvc = new eventsGraphAPIService(token);
 
-        var locationId = req.query.locationId as string;
-        if (!locationId) {
-            res.status(400).send('locationId is not found in request params');
-        }
-
-        var result = await eventsSvc.getMyEventByLocationId(locationId);
-        res.send(result);
-    } catch (e) {
-        res.status(500).send(e);
+    var locationId = req.query.locationId as string;
+    if (!locationId) {
+        res.status(400).send('locationId is not found in request params');
     }
-});
 
-router.get('/myEventDetailsId', async function (req, res) {
-    try {
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var eventsSvc = new eventsGraphAPIService(token);
+    var result = await eventsSvc.getMyEventByLocationId(locationId);
+    res.send(result);
+}));
 
-        var eventId = req.query.eventId as string;
-        if (!eventId) {
-            res.status(400).send('eventId is not found in request params');
-        }
+router.get('/myEventDetailsId', (req, res) => authorizedApi(req, res, async (token) => {
+    var eventsSvc = new eventsGraphAPIService(token);
 
-        var result = await eventsSvc.getMyEventDetailsId(eventId);
-        res.send(result);
-    } catch (e) {
-        res.status(500).send(e);
+    var eventId = req.query.eventId as string;
+    if (!eventId) {
+        res.status(400).send('eventId is not found in request params');
     }
-});
 
-router.get('/myEventIAttendeesByLocationEmailAddress', async function (req, res) {
-    try {
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var eventsSvc = new eventsGraphAPIService(token);
+    var result = await eventsSvc.getMyEventDetailsId(eventId);
+    res.send(result);
+}));
 
-        var locationEmailAddress = req.query.locationEmailAddress as string;
-        if (!locationEmailAddress) {
-            res.status(400).send('locationEmailAddress is not found in request params');
-        }
+router.get('/myEventIAttendeesByLocationEmailAddress', (req, res) => authorizedApi(req, res, async (token) => {
+    var eventsSvc = new eventsGraphAPIService(token);
 
-        var result = await eventsSvc.getMyEventIAttendeesByLocationEmailAddress(locationEmailAddress);
-        res.send(result);
-    } catch (e) {
-        res.status(500).send(e);
+    var locationEmailAddress = req.query.locationEmailAddress as string;
+    if (!locationEmailAddress) {
+        res.status(400).send('locationEmailAddress is not found in request params');
     }
-});
 
-router.get('/roomById', async function (req, res) {
-    try {
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var placesSvc = new placesGraphAPIService(token);
+    var result = await eventsSvc.getMyEventIAttendeesByLocationEmailAddress(locationEmailAddress);
+    res.send(result);
+}));
 
-        var roomId = req.query.roomId as string;
-        if (!roomId) {
-            res.status(400).send('roomId is not found in request params');
-            return;
-        }
+router.get('/roomById', (req, res) => authorizedApi(req, res, async (token) => {
+    var placesSvc = new placesGraphAPIService(token);
 
-        var result = await placesSvc.getPlaceById(roomId);
-        res.send(result);
-    } catch (e) {
-        res.status(500).send(e);
+    var roomId = req.query.roomId as string;
+    if (!roomId) {
+        res.status(400).send('roomId is not found in request params');
+        return;
     }
-});
 
-router.get('/roomByDisplayName', async function (req, res) {
-    try {
+    var result = await placesSvc.getPlaceById(roomId);
+    res.send(result);
+}));
+
+router.get('/roomByDisplayName', (req, res) => authorizedApi(req, res, async (token) => {
         var displayName = req.query.displayName as string;
         if (!displayName) {
             res.status(400).send('displayName is not found in request params');
             return;
         }
 
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
         var placesSvc = new placesGraphAPIService(token);
 
         var result = await placesSvc.getRoomByDisplayName(displayName);
         res.send(result);
-    } catch (e) {
-        res.status(500).send(e);
+}));
+
+router.get('/roomLocationByEmailAddress', (req, res) => authorizedApi(req, res, async (token) => {
+    var emailAddress = req.query.emailAddress as string;
+    if (!emailAddress) {
+        res.status(400).send('roomId is not found in request params');
+        return;
     }
-});
 
-router.get('/roomLocationByEmailAddress', async function (req, res) {
-    try {
-        var emailAddress = req.query.emailAddress as string;
-        if (!emailAddress) {
-            res.status(400).send('roomId is not found in request params');
-            return;
-        }
+    var placesSvc = new placesGraphAPIService(token);
 
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var placesSvc = new placesGraphAPIService(token);
+    var result = await placesSvc.getRoomLocationByEmailAddress(emailAddress);
+    res.send(result);
+}));
 
-        var result = await placesSvc.getRoomLocationByEmailAddress(emailAddress);
+router.get('/loggedInUserDetails', (req, res) => authorizedApi(req, res, async (token) => {
+    var usersSvc = new usersGraphAPIService(token);
+
+    var result = await usersSvc.getLoggedInUserDetails();
+    if (result) {
         res.send(result);
-    } catch (e) {
-        res.status(500).send(e);
+    } else {
+        res.sendStatus(404);
     }
-});
+}));
 
-router.get('/loggedInUserDetails', async function (req, res) {
-    try {
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var usersSvc = new usersGraphAPIService(token);
-
-        var result = await usersSvc.getLoggedInUserDetails();
-        if (result) {
-            res.send(result);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (e) {
-        res.status(500).send(e);
+router.get('/userDetailsById', (req, res) => authorizedApi(req, res, async (token) => {
+    var userId = req.query.userId as string;
+    if (!userId) {
+        res.status(400).send('userId is not found in request params');
     }
-});
 
-router.get('/userDetailsById', async function (req, res) {
-    try {
-        var userId = req.query.userId as string;
-        if (!userId) {
-            res.status(400).send('userId is not found in request params');
-        }
-
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var usersSvc = new usersGraphAPIService(token);
-        var result = await usersSvc.getUserDetailsById(userId);
-        if (result) {
-            res.send(result);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (e) {
-        res.status(500).send(e);
+    var usersSvc = new usersGraphAPIService(token);
+    var result = await usersSvc.getUserDetailsById(userId);
+    if (result) {
+        res.send(result);
+    } else {
+        res.sendStatus(404);
     }
-});
+}));
 
-router.get('/userDetailsByDisplayName', async function (req, res) {
-    try {
-        var displayName = req.query.displayName as string;
-        if (!displayName) {
-            res.status(400).send('displayName is not found in request params');
-        }
-
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var usersSvc = new usersGraphAPIService(token);
-        var result = await usersSvc.getUserDetailsByDisplayName(displayName);
-        if (result) {
-            res.send(result);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (e) {
-        res.status(500).send(e);
+router.get('/userDetailsByDisplayName', (req, res) => authorizedApi(req, res, async (token) => {
+    var displayName = req.query.displayName as string;
+    if (!displayName) {
+        res.status(400).send('displayName is not found in request params');
     }
-});
 
-router.get('/userDetailsByPrincipalName', async function (req, res) {
-    try {
-        var upn = req.query.upn as string;
-        if (!upn) {
-            res.status(400).send('upn is not found in request params');
-        }
-
-        var token = await AuthenticationService.getAccessToken((req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER]);
-        var usersSvc = new usersGraphAPIService(token);
-        var result = await usersSvc.getUserDetailsByPrincipalName(upn);
-        if (result) {
-            res.send(result);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (e) {
-        res.status(500).send(e);
+    var usersSvc = new usersGraphAPIService(token);
+    var result = await usersSvc.getUserDetailsByDisplayName(displayName);
+    if (result) {
+        res.send(result);
+    } else {
+        res.sendStatus(404);
     }
-});
+}));
+
+router.get('/userDetailsByPrincipalName', (req, res) => authorizedApi(req, res, async (token) => {
+    var upn = req.query.upn as string;
+    if (!upn) {
+        res.status(400).send('upn is not found in request params');
+    }
+
+    var usersSvc = new usersGraphAPIService(token);
+    var result = await usersSvc.getUserDetailsByPrincipalName(upn);
+    if (result) {
+        res.send(result);
+    } else {
+        res.sendStatus(404);
+    }
+}));
 
 router.get('/checkedInUsers', async function (req, res) {
     var roomId = req.query.roomId as string;
@@ -230,5 +180,19 @@ router.get('*', function (req, res) {
 router.post('*', function (req, res) {
     res.status(404).send('Api not found');
 });
+
+
+async function authorizedApi(req, res, func: Function) {
+    try {
+        var token = (req.headers as any)[constants.APP_ACCESS_TOKEN_HEADER];
+        if (!token) {
+            res.status(401).send("Unauthorized");
+            return;
+        }
+        return await func(token);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+}
 
 export default router;

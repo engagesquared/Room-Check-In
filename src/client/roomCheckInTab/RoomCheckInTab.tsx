@@ -1,16 +1,19 @@
 import * as React from "react";
-import { Provider, Flex, Text, Button, Header } from "@fluentui/react-northstar";
 import { useState, useEffect } from "react";
-import { useTeams } from "msteams-react-base-component";
-import * as microsoftTeams from "@microsoft/teams-js";
+import axios from "axios";
 import jwtDecode from "jwt-decode";
+import * as microsoftTeams from "@microsoft/teams-js";
+import { useTeams } from "msteams-react-base-component";
+import { Provider } from "@fluentui/react-northstar";
 import { Home } from "../components/home/home";
 import { Success } from "../components/success/success";
 import { UserSelection } from "../components/userSelection/userSelection";
 import { Providers } from "@microsoft/mgt-react";
 import { MgtTokenProvider } from "../providers/MgtProvider";
-import { getLoggedInUserDetails} from "../services/UserService";
+import { getLoggedInUserDetails } from "../services/UserService";
+import { getClientSideToken, getServerSideToken } from "../services/AuthService";
 import { IUser } from "../../interfaces/IUser";
+import { constants } from "../../constants";
 
 const provider = new MgtTokenProvider();
 Providers.globalProvider = provider;
@@ -27,24 +30,23 @@ export const RoomCheckInTab = () => {
     const [currentPage, setCurrentPage] = useState<string>('Home');
     const [currentPageData, setCurrentPageData] = useState<any>();
     const [currentUserDetail, setcurrentUserDetail] = useState<IUser>();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (inTeams === true) {
-            microsoftTeams.authentication.getAuthToken({
-                successCallback: (token: string) => {
-                    const decoded: { [key: string]: any; } = jwtDecode(token) as { [key: string]: any; };
-                    setName(decoded!.name);
-                    microsoftTeams.appInitialization.notifySuccess();
-                },
-                failureCallback: (message: string) => {
-                    setError(message);
-                    microsoftTeams.appInitialization.notifyFailure({
-                        reason: microsoftTeams.appInitialization.FailedReason.AuthFailed,
-                        message
-                    });
-                },
-                resources: [process.env.AUTH_APP_URI as string]
-            });
+            (async () => {
+                const clientToken = await getClientSideToken();
+                microsoftTeams.appInitialization.notifySuccess();
+                const decoded: { [key: string]: any; } = jwtDecode(clientToken) as { [key: string]: any; };
+                setName(decoded!.name);
+
+                const serverToken = await getServerSideToken();
+                axios.interceptors.request.use((config) => {
+                    config.headers[constants.APP_ACCESS_TOKEN_HEADER] = serverToken;
+                    return config;
+                });
+                setIsLoading(false);
+            })();
         } else {
             setEntityId("Not in Microsoft Teams");
         }
@@ -57,11 +59,13 @@ export const RoomCheckInTab = () => {
     }, [context]);
 
     useEffect(() => {
-        (async () => {
-            const currentUserDetail = await getLoggedInUserDetails();
-            setcurrentUserDetail(currentUserDetail);
-        })();
-    }, [getLoggedInUserDetails]);
+        if (!isLoading) {
+            (async () => {
+                const currentUserDetail = await getLoggedInUserDetails();
+                setcurrentUserDetail(currentUserDetail);
+            })();
+        }
+    }, [isLoading, getLoggedInUserDetails]);
 
     const updatePage = (currentPage: string, data?: any) => {
         setCurrentPage(currentPage);
@@ -88,10 +92,7 @@ export const RoomCheckInTab = () => {
      * The render() method to create the UI of the tab
      */
     return (
-        <Provider theme={theme} style={{
-            background: currentPage === "UserSelection"
-                ? "#FFFFFF" : "#5358B3"
-        }}>
+        <Provider theme={theme} style={{background: currentPage === "UserSelection" ? "#FFFFFF" : "#5358B3"}}>
             <React.Suspense fallback="loading">
                 {renderPage(currentPage)}
             </React.Suspense>

@@ -70,7 +70,7 @@ export default  class usersGraphAPIService {
 
             return response
                 && response.data.value
-                ? Promise.resolve(response.data.value[0].id)
+                ? Promise.resolve(response.data.value[0])
                 : null;
         }
         catch (error) {
@@ -91,7 +91,7 @@ export default  class usersGraphAPIService {
 
             return response
                 && response.data.value
-                ? Promise.resolve(response.data.value[0].id)
+                ? Promise.resolve(response.data.value[0])
                 : null;
         }
         catch (error) {
