@@ -5,6 +5,7 @@ import { IEvent } from '../../interfaces/IEvent';
 import { IAttendee } from '../../interfaces/IAttendee';
 import { ICheckIn } from "../../interfaces/ICheckIn";
 import { IDBCheckIn } from "../../interfaces/IDBCheckIn";
+import { IDBUser } from "../../interfaces/IDBUser";
 
 export const getLoggedInUserDetails = async () => {
     const userDetailsRes = await axiosDecorator.get("/api/loggedInUserDetails");
@@ -60,8 +61,14 @@ export const getMyEventDetailsId = async (eventId: string) => {
     return event;
 }
 
-export const addCheckIns = async (checkIns: ICheckIn[]) => {
-    const checkInsRes = await axiosDecorator.post(`/api/checkIns`,checkIns);
-    const checkInsAdded: IDBCheckIn[] = checkInsRes.data;
-    return checkInsAdded;
+export const getCheckedInUsers = async (roomId:string, eventId: string) => {
+    const eventRes = await axiosDecorator.get(`/api/checkedInUsers?roomId=${roomId}&eventId=${eventId}`);
+    const event: IDBUser[] = eventRes.data;
+    return event;
+}
+
+export const addCheckIn = async (checkIn: ICheckIn) => {
+    const checkInRes = await axiosDecorator.post(`/api/checkIn`,checkIn);
+    const checkInAdded: IDBCheckIn = checkInRes.data;
+    return checkInAdded;
 }

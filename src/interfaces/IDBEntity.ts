@@ -1,4 +1,4 @@
 export interface IDBEntity {
-    PartitionKey: string;
-    RowKey: string;
+    partitionKey: string;
+    rowKey: string;
 }
