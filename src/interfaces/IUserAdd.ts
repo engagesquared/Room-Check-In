@@ -3,6 +3,6 @@ export interface IUserAdd {
     displayName: string;
     mail: string;
     principalName?: string;
-    phone:string;
+    phone?:string;
     employeeId?: string;
 }
