@@ -11,7 +11,7 @@ import { getAttendees } from "../../services/PlacesService";
 import { getUserDetailsByPrincipalName } from "../../services/UserService";
 import { IAttendee } from "../../../interfaces/IAttendee";
 import { People } from "@microsoft/mgt-react";
-import { addCheckIns } from "../../services/DataTableService";
+import { addCheckIn } from "../../services/DataTableService";
 import { ICheckIn } from "../../../interfaces/ICheckIn";
 import { IUserAdd } from "../../../interfaces/IUserAdd";
 
@@ -35,7 +35,7 @@ export const UserSelection = (props: IUserSelectionProp) => {
     const onCheckIn = async () => {
         try {
             setIsLoading(true);
-            const checkIns: ICheckIn[] = [{
+            const checkIn: ICheckIn = {
                 users: [{
                     displayName: "user",
                     mail: "email",
@@ -64,10 +64,10 @@ export const UserSelection = (props: IUserSelectionProp) => {
                     capacity: props.selectedLocationDetail.capacity,
                     building: props.selectedLocationDetail.building ?? ""
                 }
-            }];
-            const checkInsAdded = await addCheckIns(checkIns);
-            if (checkInsAdded) {
-                props.updateCurrentPage("Success", checkInsAdded);
+            };
+            const checkInAdded = await addCheckIn(checkIn);
+            if (checkInAdded) {
+                props.updateCurrentPage("Success", checkInAdded);
             } else {
                 setIsLoading(false);
                 setIsError(true);

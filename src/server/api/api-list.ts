@@ -140,7 +140,7 @@ router.get('/loggedInUserDetails', async function (req, res) {
 
 router.get('/userDetailsById', async function (req, res) {
     try {
-        var userId = (req.params as any).userId;
+        var userId = req.query.userId as string;
         if (!userId) {
             res.status(400).send('userId is not found in request params');
         }
@@ -160,7 +160,7 @@ router.get('/userDetailsById', async function (req, res) {
 
 router.get('/userDetailsByDisplayName', async function (req, res) {
     try {
-        var displayName = (req.params as any).displayName;
+        var displayName = req.query.displayName as string;
         if (!displayName) {
             res.status(400).send('displayName is not found in request params');
         }
@@ -180,7 +180,7 @@ router.get('/userDetailsByDisplayName', async function (req, res) {
 
 router.get('/userDetailsByPrincipalName', async function (req, res) {
     try {
-        var upn = (req.params as any).upn;
+        var upn = req.query.upn as string;
         if (!upn) {
             res.status(400).send('upn is not found in request params');
         }
@@ -198,9 +198,9 @@ router.get('/userDetailsByPrincipalName', async function (req, res) {
     }
 });
 
-router.get('/checkedInUsersInRoom', async function (req, res) {
-    var roomId = (req.params as any).roomId;
-    var eventId = (req.params as any).eventId;
+router.get('/checkedInUsers', async function (req, res) {
+    var roomId = req.query.roomId as string;
+    var eventId = req.query.eventId as string;
 
     if (!roomId) {
         res.status(400).send('roomId is not found in request params');
@@ -209,16 +209,16 @@ router.get('/checkedInUsersInRoom', async function (req, res) {
         res.status(400).send('eventId is not found in request params');
     }
 
-    var result = await dataTableStorageService.getAllCheckedInUsersInRoomAndEvent(roomId, eventId);
+    var result = await dataTableStorageService.getCheckedInUsers(roomId, eventId);
     res.send(result);
 });
 
-router.post('/checkIns', async function (req, res) {
-    var checkIns = (req.body as ICheckIn[]);
-    if (!checkIns) {
-        res.status(400).send('checkIns are not found in request body');
+router.post('/checkIn', async function (req, res) {
+    var checkIn = (req.body as ICheckIn);
+    if (!checkIn) {
+        res.status(400).send('checkIn are not found in request body');
     }
-    var result = await dataTableStorageService.addCheckIns(checkIns);
+    var result = await dataTableStorageService.addCheckIn(checkIn);
     res.setHeader('Content-Type', 'application/json');
     res.send(result);
 });
