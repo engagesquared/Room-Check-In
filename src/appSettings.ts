@@ -29,3 +29,7 @@ export const eventAppSetting = {
 export const placesAppSetting = {
     apiUrl: process.env.PLACES_GRAPH_API_URL?.trim() || "",
 };
+
+export const appInsightsAppSetting = {
+    environmetName: process.env.ENV_NAME?.trim() || ""
+}

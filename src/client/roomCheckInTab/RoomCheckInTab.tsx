@@ -14,7 +14,9 @@ import { getLoggedInUserDetails } from "../services/UserService";
 import { getClientSideToken, getServerSideToken } from "../services/AuthService";
 import { IUser } from "../../interfaces/IUser";
 import { constants } from "../../constants";
+import { appInsightsAppSetting } from "../../appSettings";
 
+const appInsights = require("applicationinsights");
 const provider = new MgtTokenProvider();
 Providers.globalProvider = provider;
 
@@ -31,6 +33,11 @@ export const RoomCheckInTab = () => {
     const [currentPageData, setCurrentPageData] = useState<any>();
     const [currentUserDetail, setcurrentUserDetail] = useState<IUser>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    appInsights.start();
+    appInsights.defaultClient.commonProperties = {
+        environment: appInsightsAppSetting.environmetName
+    };
 
     useEffect(() => {
         if (inTeams === true) {
