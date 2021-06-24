@@ -35,12 +35,20 @@ export const UserSelection = (props: IUserSelectionProp) => {
     const onCheckIn = async () => {
         try {
             setIsLoading(true);
+
+            // TEMP SAMPLE [START]
             const checkIn: ICheckIn = {
                 users: [{
                     displayName: "user",
                     mail: "email",
                     principalName: "upn",
                     phone: "phone",
+                    employeeId: "empId"
+                },
+                {
+                    displayName: "user",
+                    mail: "email",
+                    principalName: "upn",
                     employeeId: "empId"
                 },
                 {
@@ -65,6 +73,7 @@ export const UserSelection = (props: IUserSelectionProp) => {
                     building: props.selectedLocationDetail.building ?? ""
                 }
             };
+            // TEMP SAMPLE [END]
             const checkInAdded = await addCheckIn(checkIn);
             if (checkInAdded) {
                 props.updateCurrentPage("Success", checkInAdded);
@@ -120,7 +129,7 @@ export const UserSelection = (props: IUserSelectionProp) => {
         <Flex column gap="gap.small">
             <Flex column gap="gap.small" style={{ padding: "2rem" }}>
                 <Text size="large" weight="bold" content={`${props.currentUserDetail.displayName}`} />
-                <Text content={`Job Title: ${props.currentUserDetail.jobTitle ?? ""}`} />
+                {props.currentUserDetail.jobTitle  && <Text content={`Job Title: ${props.currentUserDetail.jobTitle}`} />}
                 <Text content={`${props.currentUserDetail.mail}`} />
             </Flex>
             <Divider size={1} />
