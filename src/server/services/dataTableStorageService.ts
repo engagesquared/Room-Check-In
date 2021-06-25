@@ -112,10 +112,10 @@ class dataTableStorageService {
                     //if (userFound && userFound.byPage.length == 0) {
                     const dbEntity: IDBUserAdd = {
                         partitionKey: user.displayName,
-                        rowKey: uuidv4(),
+                        rowKey: user.mail,
                         displayName: user.displayName,
                         principalName: user.principalName,
-                        mail: user.mail ?? "",
+                        mail: user.mail,
                         phone: user.phone ?? "",
                         employeeId: user.employeeId ?? "",
                         id: user.id ?? ""
@@ -137,7 +137,7 @@ class dataTableStorageService {
         try {
             const listEntititesOptions: ListTableEntitiesOptions = {
                 queryOptions: {
-                    filter: `id eq '${room.id}'`
+                    filter: `rowKey eq '${room.id}'`
                 }
             }
             const roomClientCheck = new TableClient(this.tableUrl, constants.ROOM_TABLE_NAME, this.credential);
@@ -151,14 +151,14 @@ class dataTableStorageService {
                     phone: entity["phone"] as string ?? "",
                     capacity: entity["capacity"] as number ?? "",
                     building: entity["building"] as string ?? "",
-                    id: entity["id"] as string ?? "",
+                    id: entity["id"] as string,
                 } as IDBRoomAdd;
             }
 
             const client = new TableClient(this.tableUrl, constants.ROOM_TABLE_NAME, this.credential);
             const dbEntity: IDBRoomAdd = {
                 partitionKey: room.displayName,
-                rowKey: uuidv4(),
+                rowKey: room.id,
                 displayName: room.displayName,
                 building: room.building,
                 capacity: room.capacity,
@@ -177,7 +177,7 @@ class dataTableStorageService {
         try {
             const listEntititesOptions: ListTableEntitiesOptions = {
                 queryOptions: {
-                    filter: `id eq '${event.id}'`
+                    filter: `rowKey eq '${event.id}'`
                 }
             }
             const eventClientCheck = new TableClient(this.tableUrl, constants.EVENT_TABLE_NAME, this.credential);
@@ -200,7 +200,7 @@ class dataTableStorageService {
             const client = new TableClient(this.tableUrl, constants.EVENT_TABLE_NAME, this.credential);
             const dbEntity: IDBEventAdd = {
                 partitionKey: event.subject,
-                rowKey: uuidv4(),
+                rowKey: event.id,
                 subject: event.subject,
                 start: event.start,
                 end: event.end,

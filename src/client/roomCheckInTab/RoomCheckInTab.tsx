@@ -14,8 +14,6 @@ import { getLoggedInUserDetails } from "../services/UserService";
 import { getClientSideToken, getServerSideToken } from "../services/AuthService";
 import { IUser } from "../../interfaces/IUser";
 import { constants } from "../../constants";
-import { appInsightsAppSetting } from "../../appSettings";
-import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
 const provider = new MgtTokenProvider();
 Providers.globalProvider = provider;
@@ -33,14 +31,6 @@ export const RoomCheckInTab = () => {
     const [currentPageData, setCurrentPageData] = useState<any>();
     const [currentUserDetail, setcurrentUserDetail] = useState<IUser>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const appInsights = new ApplicationInsights({
-        config: {
-            instrumentationKey: appInsightsAppSetting.appInsightsInstrumentationKey,
-        }
-    });
-    appInsights.loadAppInsights();
-    appInsights.trackPageView();
 
     useEffect(() => {
         if (inTeams === true) {
