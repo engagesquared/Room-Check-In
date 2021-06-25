@@ -31,5 +31,5 @@ export const placesAppSetting = {
 };
 
 export const appInsightsAppSetting = {
-    environmetName: process.env.ENV_NAME?.trim() || ""
+    appInsightsInstrumentationKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY?.trim() || ""
 }

@@ -15,8 +15,8 @@ import { getClientSideToken, getServerSideToken } from "../services/AuthService"
 import { IUser } from "../../interfaces/IUser";
 import { constants } from "../../constants";
 import { appInsightsAppSetting } from "../../appSettings";
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
-const appInsights = require("applicationinsights");
 const provider = new MgtTokenProvider();
 Providers.globalProvider = provider;
 
@@ -34,10 +34,13 @@ export const RoomCheckInTab = () => {
     const [currentUserDetail, setcurrentUserDetail] = useState<IUser>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    appInsights.start();
-    appInsights.defaultClient.commonProperties = {
-        environment: appInsightsAppSetting.environmetName
-    };
+    const appInsights = new ApplicationInsights({
+        config: {
+            instrumentationKey: appInsightsAppSetting.appInsightsInstrumentationKey,
+        }
+    });
+    appInsights.loadAppInsights();
+    appInsights.trackPageView();
 
     useEffect(() => {
         if (inTeams === true) {
@@ -99,7 +102,7 @@ export const RoomCheckInTab = () => {
      * The render() method to create the UI of the tab
      */
     return (
-        <Provider theme={theme} style={{background: currentPage === "UserSelection" ? "#FFFFFF" : "#5358B3"}}>
+        <Provider theme={theme} style={{ background: currentPage === "UserSelection" ? "#FFFFFF" : "#5358B3" }}>
             <React.Suspense fallback="loading">
                 {renderPage(currentPage)}
             </React.Suspense>
