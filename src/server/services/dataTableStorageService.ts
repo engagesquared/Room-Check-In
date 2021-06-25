@@ -198,18 +198,31 @@ class dataTableStorageService {
             }
 
             const client = new TableClient(this.tableUrl, constants.EVENT_TABLE_NAME, this.credential);
-            const dbEntity: IDBEventAdd = {
-                partitionKey: event.subject,
-                rowKey: event.id,
-                subject: event.subject,
-                start: event.start,
-                end: event.end,
-                locationDisplayName: event.locationDisplayName,
-                locationEmail: event.locationEmail,
-                id: event.id
-            };
-            await client.createEntity(dbEntity);
-            return dbEntity;
+            if (Object.keys(event).length === 0 && event.constructor === Object) {
+                const dbEntity: IDBEventAdd = {
+                    partitionKey: event.subject as string,
+                    rowKey: uuidv4(),
+                    subject: event.subject as string,
+                    start: event.start as string,
+                    end: event.end as string,
+                    locationDisplayName: event.locationDisplayName as string,
+                    locationEmail: event.locationEmail as string,
+                    id: event.id as string
+                };
+                await client.createEntity(dbEntity);
+                return dbEntity;
+            } else {
+                return {
+                    partitionKey: "",
+                    rowKey: uuidv4(),
+                    subject: "",
+                    start: "",
+                    end: "",
+                    locationDisplayName: "",
+                    locationEmail: "",
+                    id: ""
+                };
+            }
         }
         catch (error) {
             throw error;

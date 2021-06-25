@@ -81,8 +81,8 @@ export const RoomCheckInTab = () => {
                     selectedLocationDetail={currentPageData}
                     currentUserDetail={currentUserDetail as IUser} />);
             case 'Success':
-                return (<Success updateCurrentPage={setCurrentPage} currentUserName={name ? name : ""}
-                    selectedLocation={"OSC.AG.MR21"} />)
+                return (<Success updateCurrentPage={setCurrentPage} currentUserName={currentUserDetail ? currentUserDetail.displayName : ""}
+                    selectedLocation={currentPageData ? currentPageData.displayName : ""} />)
             default:
                 break;
         }

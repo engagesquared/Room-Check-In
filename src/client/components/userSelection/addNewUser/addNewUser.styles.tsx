@@ -3,6 +3,12 @@ import { ITheme } from "../../../providers/ITheme";
 import { createUseStyles } from "react-jss";
 export const useStyles = createUseStyles((theme: ITheme) => {
     return {
+        container: {
+            "& mgt-people-picker": {
+                "--input-border": "none",
+                "--input-background-color": "#f5f5f5",
+            }
+        },
         paddingTop: {
             paddingTop: "10em",
         },
@@ -17,7 +23,8 @@ export const useStyles = createUseStyles((theme: ITheme) => {
                 background: "#FFFFFF"
             },
             input: {
-                fontSize: "16px"
+                fontSize: "16px",
+                width: "20em"
             }
         }
     };
