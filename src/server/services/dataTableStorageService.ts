@@ -68,7 +68,7 @@ class dataTableStorageService {
                     }
                 }
                 catch (error) {
-                    console.error(error);
+                    console.error(`user '${user.mail}' failed to be added to room '${roomAdded.displayName}' for event '${eventAdded.subject}'::${error}`);
                 }
 
             };
@@ -76,7 +76,8 @@ class dataTableStorageService {
             return `${checkInAdded.length}/${checkIn.users.length} added and ${checkInAlreadyExists.length}/${checkIn.users.length} already existed`;
         }
         catch (error) {
-            throw error;
+            console.error(error.stack);
+            return(error);
         }
     }
 
@@ -137,7 +138,7 @@ class dataTableStorageService {
         try {
             const listEntititesOptions: ListTableEntitiesOptions = {
                 queryOptions: {
-                    filter: `rowKey eq '${room.id}'`
+                    filter: `RowKey eq '${room.id}'`
                 }
             }
             const roomClientCheck = new TableClient(this.tableUrl, constants.ROOM_TABLE_NAME, this.credential);
@@ -177,7 +178,7 @@ class dataTableStorageService {
         try {
             const listEntititesOptions: ListTableEntitiesOptions = {
                 queryOptions: {
-                    filter: `rowKey eq '${event.id}'`
+                    filter: `RowKey eq '${event.id}'`
                 }
             }
             const eventClientCheck = new TableClient(this.tableUrl, constants.EVENT_TABLE_NAME, this.credential);
@@ -231,27 +232,6 @@ class dataTableStorageService {
 
     public async getCheckedInUsers(roomId: string, eventId: string): Promise<IDBUser[]> {
         try {
-            return await [{
-                partitionKey: "user-displayName-1",
-                rowKey: "a8dad104-3e0f-4020-94af-f49c5bb61647",
-                displayName: "user-displayName-1",
-                principalName: "user-upn-1",
-                mail: "user-mail-1",
-                phone: "user-phone-1",
-                employeeId: "user-empId-1",
-                id: ""
-            },
-            {
-                partitionKey: "user-displayName-2",
-                rowKey: "b14c1b8a-7220-4473-8f7b-64887c85edd6",
-                displayName: "user-displayName-2",
-                principalName: "user-upn-2",
-                mail: "user-mail-2",
-                phone: "user-phone-2",
-                employeeId: "user-empId-2",
-                id: ""
-            }];
-
             const checkInlistEntititesOptions: ListTableEntitiesOptions = {
                 queryOptions: {
                     filter: `roomId eq '${roomId}' and eventId eq '${eventId}'`
@@ -261,7 +241,7 @@ class dataTableStorageService {
             const roomCheckIns = await checkInClient.listEntities(checkInlistEntititesOptions);
             const userIds: string[] = [];
             for await (const entity of roomCheckIns) {
-                userIds.push(`rowKey eq '${entity["userId"]}'` as string);
+                userIds.push(`RowKey eq '${entity["userId"]}'` as string);
             }
             if (userIds.length == 0) return [];
 
@@ -291,7 +271,8 @@ class dataTableStorageService {
             return roomUsers;
         }
         catch (error) {
-            throw error;
+            console.error(error.stack);
+            return(error);
         }
     }
 }
