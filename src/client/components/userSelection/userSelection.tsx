@@ -17,6 +17,7 @@ import { getMyNextEventByLocationEmailAddress } from "../../apis/api-list";
 import { IEventAdd } from "../../../interfaces/IEventAdd";
 import { v4 as uuidv4 } from 'uuid';
 import { constants } from "../../../constants";
+import * as moment from 'moment'; 
 
 export interface IUserSelectionProp {
     currentUserName: string;
@@ -111,11 +112,13 @@ export const UserSelection = (props: IUserSelectionProp) => {
             tempfinalAttendees.push(tempUser);
         });
         
+        const currentDate = moment().toISOString();
+        const currentDateNextHour = moment().add(1, 'hours').toISOString();
         let eventAdd: IEventAdd = {
             id: myNextEvent ? myNextEvent.id : uuidv4(),
             subject: myNextEvent ? myNextEvent.subject: constants.ADHOC_EVENT_NAME,
-            start: myNextEvent ? myNextEvent.start.dateTime : new Date().toISOString(),
-            end: myNextEvent ? myNextEvent.end.dateTime : ((new Date()).setHours(new Date().getHours()+1)).toString(),
+            start: myNextEvent ? myNextEvent.start.dateTime : currentDate,
+            end: myNextEvent ? myNextEvent.end.dateTime : currentDateNextHour,
             locationDisplayName: myNextEvent?.location.displayName,
             locationEmail: myNextEvent?.location.locationEmailAddress
         };
