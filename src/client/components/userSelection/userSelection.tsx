@@ -7,13 +7,16 @@ import { AddNewUser } from "./addNewUser/addNewUser";
 import { AddNewVisitor } from "./addNewVisitor/addNewVisitor";
 import { IUser } from "../../../interfaces/IUser";
 import { IRoom } from "../../../interfaces/IRoom";
-import { getAttendees, getEventByLocationId } from "../../services/PlacesService";
 import { IAttendee } from "../../../interfaces/IAttendee";
 import { People } from "@microsoft/mgt-react";
 import { IEvent } from "../../../interfaces/IEvent";
 import { ICheckIn } from "../../../interfaces/ICheckIn";
 import { IUserAdd } from "../../../interfaces/IUserAdd";
 import { addCheckIn } from "../../services/DataTableService";
+import { getMyNextEventByLocationEmailAddress } from "../../apis/api-list";
+import { IEventAdd } from "../../../interfaces/IEventAdd";
+import { v4 as uuidv4 } from 'uuid';
+import { constants } from "../../../constants";
 
 export interface IUserSelectionProp {
     currentUserName: string;
@@ -29,20 +32,20 @@ export const UserSelection = (props: IUserSelectionProp) => {
     const [displayVisitor, setDisplayVisitor] = React.useState<Boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [users, setUsers] = React.useState<IAttendee[]>([]);
-    const [events, setEvents] = React.useState<IEvent[]>([]);
+    const [myNextEvent, setMyNextEvent] = React.useState<IEvent>();
     const [finalAttendees, setFinalAttendees] = React.useState<IAttendee[]>([]);
     const [isError, setIsError] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         (async () => {
             if (props.selectedLocationDetail) {
-                const colleagues = await getAttendees(props.selectedLocationDetail.emailAddress);
+                const myNextEvent = await getMyNextEventByLocationEmailAddress(props.selectedLocationDetail.emailAddress);
+                const colleagues = myNextEvent.attendees;
+                setMyNextEvent(myNextEvent);
                 setUsers(colleagues);
-                const events = await getEventByLocationId(props.selectedLocationDetail.id);
-                setEvents(events);
             }
         })();
-    }, [getAttendees, props.selectedLocationDetail]);
+    }, [getMyNextEventByLocationEmailAddress, props.selectedLocationDetail]);
 
     const updateUser = (isCancel: boolean, userDetail?: { name: string, email: string, phone: string, type: string }) => {
         if (!isCancel) {
@@ -107,11 +110,20 @@ export const UserSelection = (props: IUserSelectionProp) => {
             };
             tempfinalAttendees.push(tempUser);
         });
-        let tempEvent: any = events.length > 0 ? events[0] : {};
-        tempEvent.locationDisplayName = props.selectedLocationDetail.displayName;
-        tempEvent.locationEmail = props.selectedLocationDetail.emailAddress;
+        
+        let eventAdd: IEventAdd = {
+            id: myNextEvent ? myNextEvent.id : uuidv4(),
+            subject: myNextEvent ? myNextEvent.subject: constants.ADHOC_EVENT_NAME,
+            start: myNextEvent ? myNextEvent.start.dateTime : new Date().toISOString(),
+            end: myNextEvent ? myNextEvent.end.dateTime : ((new Date()).setHours(new Date().getHours()+1)).toString(),
+            locationDisplayName: myNextEvent?.location.displayName,
+            locationEmail: myNextEvent?.location.locationEmailAddress
+        };
+
+        //eventAdd.locationDisplayName = props.selectedLocationDetail.displayName;
+        //eventAdd.locationEmail = props.selectedLocationDetail.emailAddress;
         let finalCheckInObject: ICheckIn = {
-            event: tempEvent,
+            event: eventAdd,
             room: props.selectedLocationDetail,
             users: tempfinalAttendees
         };

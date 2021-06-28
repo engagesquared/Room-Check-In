@@ -8,7 +8,6 @@ export interface IAddNewVisitorProp {
     updateUser: any;
 }
 
-
 export const AddNewVisitor = (props: IAddNewVisitorProp) => {
     const { t } = useTranslation();
     const classes = useStyles();

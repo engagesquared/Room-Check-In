@@ -1,14 +1,17 @@
 import { IUser } from '../../interfaces/IUser';
 import {
-    getLoggedInUserDetails as getLoggedInUserDetailsApi,
-    getUserDetailsById as getUserDetailsByIdApi,
-    getUserDetailsByPrincipalName as getUserDetailsByPrincipalNameApi,
-    getUserDetailsByDisplayName as getUserDetailsByDisplayNameApi
+    getLoggedInUser as getLoggedInUserApi,
+    getUserById as getUserByIdApi,
+    getUserByPrincipalName as getUserByPrincipalNameApi,
+    getUserByDisplayName as getUserByDisplayNameApi,
+    getAllUsers as getAllUsersApi,
+    getAllUsersMembersOnly as getAllUsersMembersOnlyApi,
+    getAllUsersGuestsOnly as getAllUsersGuestsOnlyApi
 } from "../apis/api-list";
 
-export const getLoggedInUserDetails = async (): Promise<IUser | undefined> => {
+export const getLoggedInUser = async (): Promise<IUser | undefined> => {
     try {
-        const userDetails = await getLoggedInUserDetailsApi();
+        const userDetails = await getLoggedInUserApi();
         return userDetails;
     } catch (error) {
         console.error(error);
@@ -16,9 +19,39 @@ export const getLoggedInUserDetails = async (): Promise<IUser | undefined> => {
     }
 }
 
-export const getUserDetailsById = async (id:string): Promise<IUser | undefined> => {
+export const getAllUsers = async (): Promise<IUser[] | undefined> => {
     try {
-        const userDetails = await getUserDetailsByIdApi(id);
+        const users = await getAllUsersApi();
+        return users;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
+
+export const getAllUsersMembersOnly = async (): Promise<IUser[] | undefined> => {
+    try {
+        const users = await getAllUsersMembersOnlyApi();
+        return users;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
+
+export const getAllUsersGuestsOnly = async (): Promise<IUser[] | undefined> => {
+    try {
+        const users = await getAllUsersGuestsOnlyApi();
+        return users;
+    } catch (error) {
+        console.error(error);
+        return undefined;
+    }
+}
+
+export const getUserById = async (id:string): Promise<IUser | undefined> => {
+    try {
+        const userDetails = await getUserByIdApi(id);
         return userDetails;
     } catch (error) {
         console.error(error);
@@ -26,9 +59,9 @@ export const getUserDetailsById = async (id:string): Promise<IUser | undefined> 
     }
 }
 
-export const getUserDetailsByPrincipalName = async (upn:string): Promise<IUser | undefined> => {
+export const getUserByPrincipalName = async (upn:string): Promise<IUser | undefined> => {
     try {
-        const userDetails = await getUserDetailsByPrincipalNameApi(upn);
+        const userDetails = await getUserByPrincipalNameApi(upn);
         return userDetails;
     } catch (error) {
         console.error(error);
@@ -36,9 +69,9 @@ export const getUserDetailsByPrincipalName = async (upn:string): Promise<IUser |
     }
 }
 
-export const getUserDetailsByDisplayName = async (displayName: string): Promise<IUser | undefined> => {
+export const getUserByDisplayName = async (displayName: string): Promise<IUser | undefined> => {
     try {
-        const userDetails = await getUserDetailsByDisplayNameApi(displayName);
+        const userDetails = await getUserByDisplayNameApi(displayName);
         return userDetails;
     } catch (error) {
         console.error(error);

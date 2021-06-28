@@ -7,22 +7,22 @@ import {
     addCheckIn as addCheckInApi,
 } from "../apis/api-list";
 
-export const addCheckIn = async (checkIn:ICheckIn): Promise<IDBCheckIn []> => {
+export const getCheckedInUsers = async (roomId: string, eventId:string): Promise<IDBUser[]> => {
     try {
-        const res: any = await addCheckInApi(checkIn);
-        return res?.data;
+        const users= await getCheckedInUsersApi(roomId, eventId);
+        return users;
     } catch (error) {
         console.error(error);
         return [];
     }
 }
 
-export const getCheckedInUsers = async (roomId: string, eventId:string): Promise<IDBUser | undefined> => {
+export const addCheckIn = async (checkIn:ICheckIn): Promise<string> => {
     try {
-        const res: any = await getCheckedInUsersApi(roomId, eventId);
+        const res: any = await addCheckInApi(checkIn);
         return res?.data;
     } catch (error) {
         console.error(error);
-        return undefined;
+        return "";
     }
 }
