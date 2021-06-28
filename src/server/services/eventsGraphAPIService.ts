@@ -3,6 +3,7 @@ import { placesAppSetting } from '../../appSettings';
 import { IAttendee } from '../../interfaces/IAttendee';
 import { IEvent } from '../../interfaces/IEvent';
 import { utilities } from '../../utilities';
+import moment = require('moment'); 
 
 export default class eventsGraphAPIService {
     axiosInstance: AxiosInstance;
@@ -46,12 +47,15 @@ export default class eventsGraphAPIService {
                 },
             };
 
-            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$filter=location/displayName eq '${locationDisplayName}' &$top=1&$count=true`, requestConfig);
+            const currentDate = moment().toISOString();
+            const currentDateNextHour = moment().add(1, 'hours').toISOString();
+            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$filter=location/displayName eq '${locationDisplayName}' and start/dateTime ge '${currentDate}' and start/dateTime le '${currentDateNextHour}'&$top=1&$count=true`, requestConfig);
             console.log(`getMyNextEventByLocationDisplayName::user is returned successfully`);
 
-            return response.data 
-            && response.data.value ? Promise.resolve(response.data.value)
-            : undefined;
+            return response.data
+                && response.data.value
+                && response.data.value.lenth != 0 ? Promise.resolve(response.data.value[0])
+                : undefined;
         }
         catch (error) {
             utilities.throwGraphAPIError(`getMyNextEventByLocationDisplayName`, error);
@@ -66,18 +70,21 @@ export default class eventsGraphAPIService {
                 },
             };
 
+            const currentDate = moment().toISOString();
+            const currentDateNextHour = moment().add(1, 'hours').toISOString();
+
             // filter by location/locationEmailAddress unavailable
-            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$top=100&$count=true`, requestConfig);
+            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$filtet=start/dateTime ge '${currentDate}' and start/dateTime le '${currentDateNextHour}'&$top=100&$count=true`, requestConfig);
             console.log(`getMyNextEventByLocationEmailAddress::user is returned successfully`);
 
-            let events: IEvent[]=[];
+            let events: IEvent[] = [];
             if (response.data && response.data.value && response.data.value.length) {
                 events = response.data.value.filter(x => x.location.locationEmailAddress === locationEmailAddress);
             }
 
             return events
-            && events.length != 0 ? Promise.resolve(events[0])
-            : undefined;
+                && events.length != 0 ? Promise.resolve(events[0])
+                : undefined;
         }
         catch (error) {
             utilities.throwGraphAPIError(`getMyNextEventByLocationEmailAddress`, error);
