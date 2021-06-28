@@ -74,12 +74,12 @@ export default class eventsGraphAPIService {
             const currentDateNextHour = moment().add(1, 'hours').toISOString();
 
             // filter by location/locationEmailAddress unavailable
-            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,location&$filtet=start/dateTime ge '${currentDate}' and start/dateTime le '${currentDateNextHour}'&$top=100&$count=true`, requestConfig);
+            const response = await this.axiosInstance.get(`/me/events?$select=subject,bodyPreview,organizer,attendees,start,end,locations&$filter=start/dateTime ge '${currentDate}' and start/dateTime le '${currentDateNextHour}'&$top=100&$count=true`, requestConfig);
             console.log(`getMyNextEventByLocationEmailAddress::user is returned successfully`);
 
             let events: IEvent[] = [];
             if (response.data && response.data.value && response.data.value.length) {
-                events = response.data.value.filter(x => x.location.locationEmailAddress === locationEmailAddress);
+                events = response.data.value.filter(x => x.locations.some(location => location?.locationUri === locationEmailAddress));
             }
 
             return events

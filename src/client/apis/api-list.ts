@@ -45,7 +45,7 @@ export const getUserByDisplayName = async (displayName: string): Promise<IUser |
 }
 
 export const getUserByPrincipalName = async (upn:string): Promise<IUser | undefined> => {
-    const userDetailsRes = await axios.get(`/api/users/byUserPrincipalName/upn=${upn}`);
+    const userDetailsRes = await axios.get(`/api/users/byUserPrincipalName/${upn}`);
     const userDetails: IUser | undefined = userDetailsRes.data;
     return userDetails;
 }
@@ -87,7 +87,7 @@ export const getMyNextEventByLocationDisplayName = async (locationDisplayName: s
 }
 
 export const getMyNextEventByLocationEmailAddress = async (locationEmailAdress: string): Promise<IEvent> => {
-    const eventsRes = await axios.get(`/api/me/events/byLocationEmailAdress/${locationEmailAdress}`);
+    const eventsRes = await axios.get(`/api/me/events/byLocationEmailAddress/${locationEmailAdress}`);
     const events: IEvent = eventsRes.data;
     return events;
 }

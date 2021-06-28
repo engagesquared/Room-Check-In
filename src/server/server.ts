@@ -16,7 +16,16 @@ log("Initializing Microsoft Teams Express hosted App...");
 require("dotenv").config();
 
 // Set up app insights
-appInsights.setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY).start();
+appInsights.setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY)
+                                                    .setAutoDependencyCorrelation(true)
+                                                    .setAutoCollectRequests(true)
+                                                    .setAutoCollectPerformance(true)
+                                                    .setAutoCollectExceptions(true)
+                                                    .setAutoCollectDependencies(true)
+                                                    .setAutoCollectConsole(true)
+                                                    .setUseDiskRetryCaching(true)
+                                                    .start();
+
 // The import of components has to be done AFTER the dotenv config
 // eslint-disable-next-line import/first
 import * as allComponents from "./TeamsAppsComponents";
