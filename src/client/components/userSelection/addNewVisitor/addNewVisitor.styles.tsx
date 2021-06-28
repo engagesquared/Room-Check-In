@@ -12,6 +12,9 @@ export const useStyles = createUseStyles((theme: ITheme) => {
         buttonWidth: {
             width: "15.5em",
         },
+        "& childMarginBottom > :not(:last-child)": {
+            marginBottom: "0.5rem"
+        },
         '@global': {
             body: {
                 background: "#FFFFFF"

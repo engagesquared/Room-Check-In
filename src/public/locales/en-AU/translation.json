@@ -6,5 +6,16 @@
     "name": "Name",
     "email": "Email",
     "phone": "Phone",
-    "savebtnlbl": "Save"
+    "savebtnlbl": "Save",
+    "roomNotFoundErrMsg": "Room not found",
+    "donebtnlbl": "Done",
+    "successMsglbl": "Thanks {currentUserName}, you have checked into room",
+    "colleaguesMsglbl": "Are these colleagues with you?",
+    "addUser": "+ Add another person",
+    "addVisitor": "+ Add visitor",
+    "checkinBtnlbl": "Check-in",
+    "maxUserErrorMsglbl": "A maximum of {capacity} people are allowed in this room.",
+    "locationlbl": "Location: {displayName}",
+    "cancelbtnlbl": "cancel",
+    "mandatoryMsglbl": "Please fill all the fields"
 }

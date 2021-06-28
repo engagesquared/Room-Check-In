@@ -10,10 +10,28 @@ export const useStyles = createUseStyles((theme: ITheme) => {
             margin: "0 auto",
         },
         buttonWidth: {
-            width: "15.5em",
+            width: "20em",
         },
         pointer: {
             cursor: "pointer",
+        },
+        paddingFlex: {
+            padding: "2rem"
+        },
+        paddingHeight: {
+            padding: "0 2rem 2rem 2rem",
+            height: "55vh"
+        },
+        locationPadding:{
+            padding: "1em"
+        },
+        errorMsg:{
+            width: "100%", textAlign: "center"
+        },
+        bottomSection:{
+            background: "#F9F9F9",
+            padding: "1%",
+            width: "100%"
         },
         '@global': {
             body: {

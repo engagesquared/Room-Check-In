@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useStyles } from "./home.styles";
 import { Flex, Image, Text, Input, Button, SearchIcon, Alert } from "@fluentui/react-northstar";
 import { QrScanner } from "./qrScanner/qrScanner";
-import { getRoomByDisplayName, getRoomById } from "../../services/PlacesService";
+import { getRoomByDisplayName } from "../../services/PlacesService";
 import * as microsoftTeams from "@microsoft/teams-js";
+import { useTeams } from "msteams-react-base-component";
 
 export interface IHomeProps {
     updateCurrentPage: any;
@@ -14,6 +15,7 @@ export interface IHomeProps {
 export const Home = (props: IHomeProps) => {
     const { t } = useTranslation();
     const classes = useStyles();
+    const [{ context }] = useTeams();
     const [isScan, setIsScan] = React.useState<Boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [roomname, SetRoomName] = React.useState<string>('');
@@ -40,7 +42,7 @@ export const Home = (props: IHomeProps) => {
 
     const onScannedPlace = async (scanedPlace: string | null) => {
         if (scanedPlace) {
-            const roomDetails = await getRoomById(scanedPlace);
+            const roomDetails = await getRoomByDisplayName(decodeURIComponent(scanedPlace));
             if (roomDetails) {
                 props.updateCurrentPage("UserSelection", roomDetails);
             } else {
@@ -59,10 +61,16 @@ export const Home = (props: IHomeProps) => {
                 if (error.message) {
                 }
             } else if (decodedText) {
-                const urlParams = new URL(decodedText).searchParams;
-                const myParam = urlParams.get('location');
                 setIsLoading(true);
-                onScannedPlace(myParam);
+                try {
+                    const urlParams = new URL(decodedText).searchParams;
+                    const myParam = urlParams.get('location');
+                    onScannedPlace(myParam);
+                } catch (error) {
+                    console.error(error);
+                    setIsLoading(true);
+                    setIsError(true);
+                }
             }
         }, config);
     };
@@ -79,7 +87,7 @@ export const Home = (props: IHomeProps) => {
                             content={t('applbl')} color="white" />
                     </Flex>
                     <Flex className={`${classes.center} ${classes.paddingTop}`} >
-                        <Input styles={{ width: "20em" }}
+                        <Input className={classes.buttonWidth}
                             inverted
                             icon={<SearchIcon />}
                             placeholder={t('roomSearchPlaceholder')}
@@ -94,12 +102,15 @@ export const Home = (props: IHomeProps) => {
                         />
                     </Flex>
                     <Flex className={classes.center}>
-                        {isError && <Alert style={{ width: "20em", textAlign: "center" }} danger content="Room not found" />}
+                        {isError && <Alert className={classes.alertAlignment}
+                            danger content={t('roomNotFoundErrMsg')} />}
                     </Flex>
-                    <Flex className={classes.center}>
-                        <Text content={t('roomSearchScanQRCode')} className={classes.pointer}
-                            onClick={onScannerClick} color="white" />
-                    </Flex></> :
+                    {(context?.hostClientType === microsoftTeams.HostClientType.android ||
+                        context?.hostClientType === microsoftTeams.HostClientType.ios) &&
+                        <Flex className={classes.center}>
+                            <Text content={t('roomSearchScanQRCode')} className={classes.pointer}
+                                onClick={onScannerClick} color="white" />
+                        </Flex>}</> :
                 <QrScanner updateCurrentPage={props.updateCurrentPage}></QrScanner>
             }
         </Flex>

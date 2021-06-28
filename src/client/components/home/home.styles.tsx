@@ -9,6 +9,10 @@ export const useStyles = createUseStyles((theme: ITheme) => {
                 textAlign: "center"
             }
         },
+        alertAlignment: {
+            width: "20em",
+            textAlign: "center"
+        },
         paddingTop: {
             paddingTop: "10em",
         },

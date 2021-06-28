@@ -18,22 +18,20 @@ export const Success = (props: ISuccessProp) => {
             <Flex className={classes.center}>
                 <Image src="/assets/Success.svg" />
             </Flex>
-            <Flex className={classes.center} style={{ marginTop: "5em", maxWidth: "15.5em" }} >
-                <Text align="center" content={`Thanks ${props.currentUserName}, you have checked into room`} color="white" />
+            <Flex className={`${classes.center} ${classes.successMsg}`} >
+                <Text align="center"
+                    content={t('successMsglbl').replace('{currentUserName}', props.currentUserName)}
+                    color="white" />
             </Flex>
-            <Flex className={classes.center} style={{ maxWidth: "15.5em" }}>
+            <Flex className={`${classes.center} ${classes.textWidth}`} >
                 <Text size="largest"
                     content={`${props.selectedLocation}`} color="white" />
             </Flex>
-            <Flex className={classes.center} hAlign="center" vAlign="end"
-                style={{
-                    position: "absolute",
-                    height: "calc(100% - 170px)",
-                    marginLeft: "calc(50% - 140px)"
-                }}>
-                <Button content="Done" onClick={() => {
+            <Flex className={`${classes.center} ${classes.buttonAlignment}`}
+                hAlign="center" vAlign="end">
+                <Button content={t('donebtnlbl')} onClick={() => {
                     props.updateCurrentPage("Home");
-                }} tinted style={{ width: "20em" }} />
+                }} tinted className={classes.buttonWidth} />
             </Flex>
         </Flex>
     );

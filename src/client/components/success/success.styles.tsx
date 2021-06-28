@@ -10,7 +10,19 @@ export const useStyles = createUseStyles((theme: ITheme) => {
             margin: "0 auto",
         },
         buttonWidth: {
-            width: "15.5em",
+            width: "20em",
+        },
+        successMsg: {
+            marginTop: "5em",
+            maxWidth: "15.5em"
+        },
+        textWidth: {
+            maxWidth: "15.5em"
+        },
+        buttonAlignment: {
+            position: "absolute",
+            height: "calc(100% - 170px)",
+            marginLeft: "calc(50% - 140px)"
         },
         '@global': {
             body: {
