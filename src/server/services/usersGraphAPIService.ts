@@ -118,7 +118,7 @@ export default  class usersGraphAPIService {
         }
     }
 
-    public async getUserByDisplayName(email:string): Promise<IUser | undefined> {
+    public async getUserByDisplayName(displayName:string): Promise<IUser | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -126,7 +126,7 @@ export default  class usersGraphAPIService {
                 },
             };
 
-            const response = await this.axiosInstance.get(`/users/?$count=true&$filter=displayName eq '${email}'&$top=1`, requestConfig);
+            const response = await this.axiosInstance.get(`/users/?$count=true&$filter=displayName eq '${displayName}'&$top=1`, requestConfig);
             console.log(`getUserByDisplayName::user is returned successfully`);
 
             return response
