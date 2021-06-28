@@ -63,7 +63,7 @@ router.get('/users/guestsOnly', (req, res) => authorizedApi(req, res, async (tok
 }));
 
 router.get('/users/:userId', (req, res) => authorizedApi(req, res, async (token) => {
-    var userId = req.query.userId as string;
+    var userId = req.params.userId as string;
     if (!userId) {
         res.status(400).send('userId is not found in request params');
     }
@@ -78,7 +78,7 @@ router.get('/users/:userId', (req, res) => authorizedApi(req, res, async (token)
 }));
 
 router.get('/users/byDisplayName/:displayName', (req, res) => authorizedApi(req, res, async (token) => {
-    var displayName = req.query.displayName as string;
+    var displayName = req.params.displayName as string;
     if (!displayName) {
         res.status(400).send('displayName is not found in request params');
     }
@@ -93,7 +93,7 @@ router.get('/users/byDisplayName/:displayName', (req, res) => authorizedApi(req,
 }));
 
 router.get('/users/byUserPrincipalName/:upn', (req, res) => authorizedApi(req, res, async (token) => {
-    var upn = req.query.upn as string;
+    var upn = req.params.upn as string;
     if (!upn) {
         res.status(400).send('upn is not found in request params');
     }
@@ -112,7 +112,7 @@ router.get('/users/byUserPrincipalName/:upn', (req, res) => authorizedApi(req, r
 router.get('/places/:roomId', (req, res) => authorizedApi(req, res, async (token) => {
     var placesSvc = new placesGraphAPIService(token);
 
-    var roomId = req.query.roomId as string;
+    var roomId = req.params.roomId as string;
     if (!roomId) {
         res.status(400).send('roomId is not found in request params');
         return;
@@ -123,7 +123,7 @@ router.get('/places/:roomId', (req, res) => authorizedApi(req, res, async (token
 }));
 
 router.get('/places/byDisplayName/:displayName', (req, res) => authorizedApi(req, res, async (token) => {
-        var displayName = req.query.displayName as string;
+        var displayName = req.params.displayName as string;
         if (!displayName) {
             res.status(400).send('displayName is not found in request params');
             return;
@@ -136,7 +136,7 @@ router.get('/places/byDisplayName/:displayName', (req, res) => authorizedApi(req
 }));
 
 router.get('/places/byEmailAdress/:emailAddress', (req, res) => authorizedApi(req, res, async (token) => {
-    var emailAddress = req.query.emailAddress as string;
+    var emailAddress = req.params.emailAddress as string;
     if (!emailAddress) {
         res.status(400).send('emailAddress is not found in request params');
         return;
@@ -153,7 +153,7 @@ router.get('/places/byEmailAdress/:emailAddress', (req, res) => authorizedApi(re
 router.get('/me/events/:eventId', (req, res) => authorizedApi(req, res, async (token) => {
     var eventsSvc = new eventsGraphAPIService(token);
 
-    var eventId = req.query.eventId as string;
+    var eventId = req.params.eventId as string;
     if (!eventId) {
         res.status(400).send('eventId is not found in request params');
     }
@@ -165,7 +165,7 @@ router.get('/me/events/:eventId', (req, res) => authorizedApi(req, res, async (t
 router.get('/me/events/byLocationDisplayName/:locationDisplayName', (req, res) => authorizedApi(req, res, async (token) => {
     var eventsSvc = new eventsGraphAPIService(token);
 
-    var locationDisplayName = req.query.locationDisplayName as string;
+    var locationDisplayName = req.params.locationDisplayName as string;
     if (!locationDisplayName) {
         res.status(400).send('locationDisplayName is not found in request params');
     }
@@ -177,7 +177,7 @@ router.get('/me/events/byLocationDisplayName/:locationDisplayName', (req, res) =
 router.get('/me/events/byLocationEmailAddress/:locationEmailAddress', (req, res) => authorizedApi(req, res, async (token) => {
     var eventsSvc = new eventsGraphAPIService(token);
 
-    var locationEmailAddress = req.query.locationEmailAddress as string;
+    var locationEmailAddress = req.params.locationEmailAddress as string;
     if (!locationEmailAddress) {
         res.status(400).send('locationEmailAddress is not found in request params');
     }
@@ -189,8 +189,8 @@ router.get('/me/events/byLocationEmailAddress/:locationEmailAddress', (req, res)
 
 // data-table APIs [START]
 router.get('/users/checkedIn/:roomId/:eventId', async function (req, res) {
-    var roomId = req.query.roomId as string;
-    var eventId = req.query.eventId as string;
+    var roomId = req.params.roomId as string;
+    var eventId = req.params.eventId as string;
 
     if (!roomId) {
         res.status(400).send('roomId is not found in request params');
