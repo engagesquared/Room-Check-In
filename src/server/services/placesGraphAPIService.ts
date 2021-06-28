@@ -46,7 +46,7 @@ export default class placesGraphAPIService {
             };
 
             const response = await this.axiosInstance.get(`/places/microsoft.graph.room?$count=true&$filter=displayName eq '${displayName}'&$top=1`, requestConfig);
-            console.log(`getLoggedInUser::user is returned successfully`);
+            console.log(`getRoomByDisplayName::user is returned successfully`);
 
             return response
                 && response.data.value
@@ -55,11 +55,11 @@ export default class placesGraphAPIService {
                 : null;
         }
         catch (error) {
-            utilities.throwGraphAPIError(`getPlaceRoomsByName`, error);
+            utilities.throwGraphAPIError(`getRoomByDisplayName`, error);
         }
     }
 
-    public async getRoomLocationByEmailAddress(emailAddress: string): Promise<string | undefined> {
+    public async getRoomByEmailAddress(emailAddress: string): Promise<IRoom | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -67,13 +67,17 @@ export default class placesGraphAPIService {
                 },
             };
 
-            const response = await this.axiosInstance.get(`/users/${emailAddress}`, requestConfig);
-            console.log(`getLoggedInUser::user is returned successfully`);
+            const response = await this.axiosInstance.get(`/places/microsoft.graph.room?$count=true&$filter=emailAddress eq '${emailAddress}'&$top=1`, requestConfig);
+            console.log(`getRoomByDisplayEmailAddress::user is returned successfully`);
 
-            return response && response.data && response.data.officeLocation ? response.data.officeLocation : null;
+            return response
+                && response.data.value
+                && response.data.value.length != 0
+                && response.data.value[0] ? Promise.resolve(response.data.value[0])
+                : null;
         }
         catch (error) {
-            utilities.throwGraphAPIError(`getPlaceRoomsByName`, error);
+            utilities.throwGraphAPIError(`getRoomByDisplayEmailAddress`, error);
         }
     }
 }

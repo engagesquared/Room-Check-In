@@ -17,7 +17,7 @@ export default  class usersGraphAPIService {
         });
     }
 
-    public async getLoggedInUserDetails(): Promise<IUser | undefined> {
+    public async getLoggedInUser(): Promise<IUser | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -26,18 +26,58 @@ export default  class usersGraphAPIService {
             };
 
             const response = await this.axiosInstance.get(`/me`, requestConfig);
-            console.log(`getLoggedInUserDetails::user is returned successfully`);
+            console.log(`getLoggedInUser::user is returned successfully`);
 
             return response.data
             ? Promise.resolve(response.data)
             : null;
         }
         catch (error) {
-            utilities.throwGraphAPIError(`getLoggedInUserDetails`, error);
+            utilities.throwGraphAPIError(`getLoggedInUser`, error);
         }
     }
 
-    public async getUserDetailsById(userId:string): Promise<IUser | undefined> {
+    public async getAllUsers(): Promise<IUser[]| undefined> {
+        try {
+            const requestConfig: AxiosRequestConfig = {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                },
+            };
+
+            const response = await this.axiosInstance.get(`/users`, requestConfig);
+            console.log(`getUsers::user is returned successfully`);
+
+            return response.data
+            ? Promise.resolve(response.data)
+            : Promise.resolve([]);
+        }
+        catch (error) {
+            utilities.throwGraphAPIError(`getUsers`, error);
+        }
+    }
+
+    public async getAllUsersByUserType(userType:string): Promise<IUser[]| undefined> {
+        try {
+            const requestConfig: AxiosRequestConfig = {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                },
+            };
+
+            const response = await this.axiosInstance.get(`/users?$filter=userType eq '${userType}'`, requestConfig);
+            console.log(`getUsers::user is returned successfully`);
+
+            return response.data
+            ? Promise.resolve(response.data)
+            : Promise.resolve([]);
+        }
+        catch (error) {
+            utilities.throwGraphAPIError(`getUsers`, error);
+        }
+    }
+
+    public async getUserById(userId:string): Promise<IUser | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -46,18 +86,18 @@ export default  class usersGraphAPIService {
             };
 
             const response = await this.axiosInstance.get(`/users/${userId}`, requestConfig);
-            console.log(`getUserDetailsById::user is returned successfully`);
+            console.log(`getUserById::user is returned successfully`);
 
             return response.data
             ? Promise.resolve(response.data)
             : null;
         }
         catch (error) {
-            utilities.throwGraphAPIError(`getUserDetailsById`, error);
+            utilities.throwGraphAPIError(`getUserById`, error);
         }
     }
 
-    public async getUserDetailsByPrincipalName(upn:string): Promise<IUser | undefined> {
+    public async getUserByPrincipalName(upn:string): Promise<IUser | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -66,7 +106,7 @@ export default  class usersGraphAPIService {
             };
 
             const response = await this.axiosInstance.get(`/users/?$count=true&$filter=userPrincipalName eq '${upn}'&$top=1`, requestConfig);
-            console.log(`getUserDetailsByPrincipalName::user is returned successfully`);
+            console.log(`getUserByPrincipalName::user is returned successfully`);
 
             return response
                 && response.data.value
@@ -74,11 +114,11 @@ export default  class usersGraphAPIService {
                 : null;
         }
         catch (error) {
-            utilities.throwGraphAPIError(`getUserDetailsByPrincipalName`, error);
+            utilities.throwGraphAPIError(`getUserByPrincipalName`, error);
         }
     }
 
-    public async getUserDetailsByDisplayName(email:string): Promise<IUser | undefined> {
+    public async getUserByDisplayName(email:string): Promise<IUser | undefined> {
         try {
             const requestConfig: AxiosRequestConfig = {
                 headers: {
@@ -87,7 +127,7 @@ export default  class usersGraphAPIService {
             };
 
             const response = await this.axiosInstance.get(`/users/?$count=true&$filter=displayName eq '${email}'&$top=1`, requestConfig);
-            console.log(`getUserDetailsByDisplayName::user is returned successfully`);
+            console.log(`getUserByDisplayName::user is returned successfully`);
 
             return response
                 && response.data.value
@@ -95,7 +135,7 @@ export default  class usersGraphAPIService {
                 : null;
         }
         catch (error) {
-            utilities.throwGraphAPIError(`getUserDetailsByDisplayName`, error);
+            utilities.throwGraphAPIError(`getUserByDisplayName`, error);
         }
     }
 }

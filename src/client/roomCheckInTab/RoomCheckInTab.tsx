@@ -10,10 +10,10 @@ import { Success } from "../components/success/success";
 import { UserSelection } from "../components/userSelection/userSelection";
 import { Providers } from "@microsoft/mgt-react";
 import { MgtTokenProvider } from "../providers/MgtProvider";
-import { getLoggedInUserDetails } from "../services/UserService";
 import { getClientSideToken, getServerSideToken } from "../services/AuthService";
 import { IUser } from "../../interfaces/IUser";
 import { constants } from "../../constants";
+import { getLoggedInUser } from "../apis/api-list";
 
 const provider = new MgtTokenProvider();
 Providers.globalProvider = provider;
@@ -61,11 +61,11 @@ export const RoomCheckInTab = () => {
     useEffect(() => {
         if (!isLoading) {
             (async () => {
-                const currentUserDetail = await getLoggedInUserDetails();
+                const currentUserDetail = await getLoggedInUser();
                 setcurrentUserDetail(currentUserDetail);
             })();
         }
-    }, [isLoading, getLoggedInUserDetails]);
+    }, [isLoading, getLoggedInUser]);
 
     const updatePage = (currentPage: string, data?: any) => {
         setCurrentPage(currentPage);
