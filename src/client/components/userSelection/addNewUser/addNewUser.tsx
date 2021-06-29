@@ -3,7 +3,7 @@ import "../../../localization/localization";
 import { useTranslation } from "react-i18next";
 import { useStyles } from "./addNewUser.styles";
 import { Alert, Button, Flex, Input, Text } from "@fluentui/react-northstar";
-import { PeoplePicker } from '@microsoft/mgt-react';
+import { UserPicker } from '../MGTPeoplePicker';
 
 export interface IAddNewUserProp {
     updateUser: any;
@@ -35,9 +35,11 @@ export const AddNewUser = (props: IAddNewUserProp) => {
         <Flex className={classes.container} column gap="gap.small" style={{ padding: "0 2rem 2rem 2rem", height: "55vh" }}>
             <Text content={t('name')} />
             <Flex styles={{ width: "23em", display: "block" }}>
-                <PeoplePicker className={classes.container} showMax={25} selectionMode="single"
-                    style={{ width: "20em" }}
-                    selectionChanged={onUserChange} />
+                <UserPicker
+                    showMax={25}
+                    selectionMode="single"
+                    selectionChanged={onUserChange}
+                />
             </Flex>
             <Input styles={{ width: "20em" }} disabled
                 label={t('email')} value={selectedUser ?
