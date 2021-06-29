@@ -11,12 +11,12 @@
     "termsOfUseUrl": "https://{{PUBLIC_HOSTNAME}}/tou.html"
   },
   "name": {
-    "short": "tab room check in app",
-    "full": "tab room check in app"
+    "short": "Room Check-In",
+    "full": "Room Check-In"
   },
   "description": {
-    "short": "TODO: add short description here",
-    "full": "TODO: add full description here"
+    "short": "Optus Check-In App is a Teams app to manage room bookings and meeting attendance.",
+    "full": "Optus Check-In App is a Teams app to manage room bookings and meeting attendance. Meeting hosts and check themselves and guests into a booked room, whilst ensuring they do not exceed COVID-19 capacity limits. Attendance data is stored and can be accessed by Admins in case of a COVID-19 case."
   },
   "icons": {
     "outline": "icon-outline.png",
