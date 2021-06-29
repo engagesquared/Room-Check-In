@@ -17,5 +17,7 @@
     "maxUserErrorMsglbl": "A maximum of {capacity} people are allowed in this room.",
     "locationlbl": "Location: {displayName}",
     "cancelbtnlbl": "cancel",
-    "mandatoryMsglbl": "Please fill all the fields"
+    "mandatoryMsglbl": "Please fill all the fields",
+    "emailErrorMsglbl": "Invalid email address. Please provide a valid email address for this visitor.",
+    "phoneErrorMsglbl": "Invalid phone number. Please provide a valid phone for this visitor."
 }

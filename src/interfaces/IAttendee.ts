@@ -5,4 +5,6 @@ export interface IAttendee {
     emailAddress: IEmailAdress;
     status: IResponseStatus;
     type: string;
+    phoneNumber?: string;
+    principalName?: string;
 }

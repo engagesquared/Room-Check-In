@@ -26,7 +26,8 @@ export const AddNewUser = (props: IAddNewUserProp) => {
             email: selectedUser.scoredEmailAddresses[0].address
             , phone: selectedUser.phones.length > 0 ?
                 selectedUser.phones[0].number : "",
-            type: "internal"
+            type: "internal",
+            principalName: selectedUser.userPrincipalName
         }) : setIsError(true);
     };
 

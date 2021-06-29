@@ -53,7 +53,8 @@ export const UserSelection = (props: IUserSelectionProp) => {
         })();
     }, [getMyNextEventByLocationEmailAddress, props.selectedLocationDetail]);
 
-    const updateUser = (isCancel: boolean, userDetail?: { name: string, email: string, phone: string, type: string }) => {
+    const updateUser = (isCancel: boolean,
+        userDetail?: { name: string, email: string, phone: string, type: string, principalName?: string }) => {
         if (!isCancel) {
             let tempUsers = users;
             let newUserDetail = {
@@ -65,7 +66,9 @@ export const UserSelection = (props: IUserSelectionProp) => {
                 emailAddress: {
                     name: `${userDetail?.name}`,
                     address: `${userDetail?.email}`
-                }
+                },
+                phoneNumber: userDetail?.phone,
+                principalName: userDetail?.principalName ? userDetail?.principalName : userDetail?.email
             };
             let tempFinalAttendees = finalAttendees;
             tempFinalAttendees.push(newUserDetail);
@@ -111,13 +114,15 @@ export const UserSelection = (props: IUserSelectionProp) => {
     const OnCheckIn = async () => {
         setIsLoading(true);
         let tempCurrentUser: any = props.currentUserDetail;
-        tempCurrentUser.phone = props.currentUserDetail.mobilePhone
+        tempCurrentUser.phone = props.currentUserDetail.mobilePhone;
+        tempCurrentUser.principalName = props.currentUserDetail.userPrincipalName;
         let tempfinalAttendees: IUserAdd[] = [tempCurrentUser];
         finalAttendees.forEach(element => {
             let tempUser: IUserAdd = {
                 displayName: element.emailAddress.name,
                 mail: element.emailAddress.address,
-                phone: '1234'
+                phone: element.phoneNumber ? element.phoneNumber : "",
+                principalName: element.principalName
             };
             tempfinalAttendees.push(tempUser);
         });

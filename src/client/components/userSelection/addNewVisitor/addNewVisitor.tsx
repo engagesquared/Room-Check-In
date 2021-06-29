@@ -2,7 +2,7 @@ import * as React from "react";
 import "../../../localization/localization";
 import { useTranslation } from "react-i18next";
 import { useStyles } from "./addNewVisitor.styles";
-import { Button, Flex, Input, Alert, SearchIcon, Text, Form, FormButton } from "@fluentui/react-northstar";
+import { Button, Flex, Input, Alert, SearchIcon, Text, Form, FormButton, FormField, FormMessage, FormLabel } from "@fluentui/react-northstar";
 
 export interface IAddNewVisitorProp {
     updateUser: any;
@@ -33,16 +33,21 @@ export const AddNewVisitor = (props: IAddNewVisitorProp) => {
                         SetName(p ? p.value : "");
                     }}
                 />
-                <Input styles={{ width: "23em" }} required type="email"
-                    label={t('email')} onChange={(ev: any, p) => {
-                        SetEmail(p ? p.value : "");
-                    }}
-                />
-                <Input styles={{ width: "23em" }} required type="tel"
-                    pattern="/^(?:\(?(?:\+?61|0)4\)?(?:[ -]?[0-9]){7}[0-9]$/"
+                <FormField>
+                    <Input styles={{ width: "23em" }} required type="email"
+                        label={t('email')}
+                        onChange={(ev: any, p) => {
+                            SetEmail(p ? p.value : "");
+                        }} onInput={(ev) => { ev.currentTarget.setCustomValidity('') }}
+                        onInvalid={(ev) => { ev.target.setCustomValidity(t('emailErrorMsglbl')); }}
+                    />
+                </FormField>
+                <Input styles={{ width: "23em" }} required type="text"
+                    pattern="^[0-9\+\-]*$"
                     label={t('phone')} onChange={(ev: any, p) => {
                         SetPhone(p ? p.value : "");
-                    }}
+                    }} onInput={(ev) => { ev.currentTarget.setCustomValidity('') }}
+                    onInvalid={(ev) => { ev.target.setCustomValidity(t('phoneErrorMsglbl')); }}
                 />
                 <Flex>
                     <FormButton content={t('savebtnlbl')} tinted
