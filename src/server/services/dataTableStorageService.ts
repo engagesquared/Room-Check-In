@@ -148,7 +148,7 @@ class dataTableStorageService {
                 partitionKey: room.displayName,
                 rowKey: room.id,
                 displayName: room.displayName,
-                building: room.building,
+                building: room.building ?? "",
                 capacity: room.capacity,
                 emailAddress: room.emailAddress,
                 id: room.id

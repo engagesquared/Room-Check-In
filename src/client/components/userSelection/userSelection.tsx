@@ -154,9 +154,9 @@ export const UserSelection = (props: IUserSelectionProp) => {
         <Flex column gap="gap.small">
             <Flex column gap="gap.small" className={classes.paddingFlex}>
                 <Text size="large" weight="bold" content={`${props.currentUserDetail.displayName}`} />
-                <Text content={`Employee Number: 
-                ${props.currentUserDetail['employeeId'] ?
-                        props.currentUserDetail['employeeId'] : ""}`} />
+                {props.currentUserDetail['employeeId'] &&
+                    <Text content={`Employee Number: ${props.currentUserDetail['employeeId']}`} />
+                }
                 <Text content={`${props.currentUserDetail.mail}`} />
             </Flex>
             <Divider size={1} />
