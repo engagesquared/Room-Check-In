@@ -42,11 +42,10 @@ export const AddNewUser = (props: IAddNewUserProp) => {
             </Flex>
             <Input styles={{ width: "20em" }} disabled
                 label={t('email')} value={selectedUser ?
-                    selectedUser.scoredEmailAddresses[0].address : ""}
+                    selectedUser.mail : ""}
             />
             <Input styles={{ width: "20em" }} disabled
-                label={t('phone')} value={selectedUser ? selectedUser.phones.length > 0 ?
-                    selectedUser.phones[0].number : "" : ""}
+                label={t('phone')} value={selectedUser.mobilePhone ?? "" }
             />
             <Flex>
                 <Button content={t('savebtnlbl')} onClick={onSave}
