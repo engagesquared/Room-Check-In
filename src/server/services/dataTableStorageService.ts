@@ -206,9 +206,26 @@ class dataTableStorageService {
 
     public async getCheckedInUsers(roomId: string, eventId: string): Promise<IDBUser[]> {
         try {
+
+            // return empty if eventid is not provided (invalid call on ad-hoc event)
+            if (!eventId) return [];
+
+            const eventlistEntititesOptions: ListTableEntitiesOptions = {
+                queryOptions: {
+                    filter: `id eq '${eventId}'`
+                }
+            }
+            const eventClient = new TableClient(this.tableUrl, constants.EVENT_TABLE_NAME, this.credential);
+            const eventEntityFound = await eventClient.listEntities(eventlistEntititesOptions);
+            let eventFound: IDBEvent | undefined;
+            for await (const entity of eventEntityFound) {
+                eventFound = this.getDBEventEntity(entity);
+            }
+            if (!eventFound) return [];
+
             const checkInlistEntititesOptions: ListTableEntitiesOptions = {
                 queryOptions: {
-                    filter: `roomId eq '${roomId}' and eventId eq '${eventId}'`
+                    filter: `roomId eq '${roomId}' and eventId eq '${eventFound.rowKey}'`
                 }
             }
             const checkInClient = new TableClient(this.tableUrl, constants.CHECKIN_TABLE_NAME, this.credential);
