@@ -15,7 +15,7 @@
     "full": "Room Check-In"
   },
   "description": {
-    "short": "Optus Check-In App is a Teams app to manage room bookings and meeting attendance.",
+    "short": "Optus Check-In App is an app to manage room bookings and meeting attendance.",
     "full": "Optus Check-In App is a Teams app to manage room bookings and meeting attendance. Meeting hosts and check themselves and guests into a booked room, whilst ensuring they do not exceed COVID-19 capacity limits. Attendance data is stored and can be accessed by Admins in case of a COVID-19 case."
   },
   "icons": {
