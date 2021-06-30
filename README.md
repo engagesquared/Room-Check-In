@@ -1,12 +1,6 @@
-# tab room check in app - Microsoft Teams App
+## About this project
 
-Generate a Microsoft Teams application.
-
-TODO: Add your documentation here
-
-## Getting started with Microsoft Teams Apps development
-
-Head on over to [Microsoft Teams official documentation](https://developer.microsoft.com/en-us/microsoft-teams) to learn how to build Microsoft Teams Tabs or the [Microsoft Teams Yeoman generator docs](https://github.com/PnP/generator-teams/docs) for details on how this solution is set up.
+Location Check In is a custom Teams app that tracks employee's use meeting rooms in case of a COVID case, and increases the efficiency of room use.
 
 ## Project setup
 
