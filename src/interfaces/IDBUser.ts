@@ -7,4 +7,5 @@ export interface IDBUser extends IDBEntity{
     phone: string;
     employeeId?: string;
     id?: string;
+    external: boolean;
 }

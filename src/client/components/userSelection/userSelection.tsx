@@ -15,8 +15,6 @@ import { IUserAdd } from "../../../interfaces/IUserAdd";
 import { addCheckIn } from "../../services/DataTableService";
 import { getMyNextEventByLocationEmailAddress } from "../../apis/api-list";
 import { IEventAdd } from "../../../interfaces/IEventAdd";
-import { v4 as uuidv4 } from 'uuid';
-import { constants } from "../../../constants";
 import * as moment from 'moment';
 
 export interface IUserSelectionProp {
@@ -116,30 +114,33 @@ export const UserSelection = (props: IUserSelectionProp) => {
         let tempCurrentUser: any = props.currentUserDetail;
         tempCurrentUser.phone = props.currentUserDetail.mobilePhone;
         tempCurrentUser.principalName = props.currentUserDetail.userPrincipalName;
+
         let tempfinalAttendees: IUserAdd[] = [tempCurrentUser];
         finalAttendees.forEach(element => {
             let tempUser: IUserAdd = {
                 displayName: element.emailAddress.name,
                 mail: element.emailAddress.address,
-                phone: element.phoneNumber ? element.phoneNumber : "",
-                principalName: element.principalName
+                phone: element.phoneNumber,
+                principalName: element.principalName,
+                external: element.type == "external"
             };
             tempfinalAttendees.push(tempUser);
         });
 
-        const currentDate = moment().toISOString();
-        const currentDateNextHour = moment().add(1, 'hours').toISOString();
+        // add room details to event
         let eventAdd: IEventAdd = {
-            id: myNextEvent ? myNextEvent.id : uuidv4(),
-            subject: myNextEvent ? myNextEvent.subject : constants.ADHOC_EVENT_NAME,
-            start: myNextEvent ? myNextEvent.start.dateTime : currentDate,
-            end: myNextEvent ? myNextEvent.end.dateTime : currentDateNextHour,
-            locationDisplayName: myNextEvent?.location.displayName,
-            locationEmail: myNextEvent?.location.locationEmailAddress
+            locationDisplayName: props.selectedLocationDetail.displayName,
+            locationEmail: props.selectedLocationDetail.emailAddress
         };
 
-        //eventAdd.locationDisplayName = props.selectedLocationDetail.displayName;
-        //eventAdd.locationEmail = props.selectedLocationDetail.emailAddress;
+        // add event details, only if next event is available
+        if (myNextEvent) {
+            eventAdd.id = myNextEvent.id;
+            eventAdd.subject = myNextEvent.subject;
+            eventAdd.start = myNextEvent.start.dateTime;
+            eventAdd.end = myNextEvent.end.dateTime;
+        }
+
         let finalCheckInObject: ICheckIn = {
             event: eventAdd,
             room: props.selectedLocationDetail,

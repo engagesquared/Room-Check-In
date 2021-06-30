@@ -5,4 +5,5 @@ export interface IUserAdd {
     principalName?: string;
     phone?:string;
     employeeId?: string;
+    external?: boolean;
 }
