@@ -10,4 +10,5 @@ export interface IEvent {
     bodyPreview: string;
     location: ILocation;
     attendees: IAttendee[];
+    adHoc: boolean;
 }

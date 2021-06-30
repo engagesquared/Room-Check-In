@@ -5,4 +5,5 @@ export interface IEventAdd {
     end?: string;
     locationDisplayName?: string;
     locationEmail?: string;
+    adHoc?: boolean;
 }

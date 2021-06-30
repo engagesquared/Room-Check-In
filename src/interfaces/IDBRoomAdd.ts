@@ -1,6 +1,5 @@
-import { IAddress } from "./IAddress";
+import { TableEntityResult } from "@azure/data-tables";
 import { IDBEntity } from "./IDBEntity";
-import { IGeoCoordinates } from "./IGeoCoordinates";
 
 export interface IDBRoomAdd extends IDBEntity {
     id: string;
@@ -9,4 +8,8 @@ export interface IDBRoomAdd extends IDBEntity {
     phone?: string;
     capacity: number;
     building?: string;
+}
+
+export function instanceOfIDBRoomAdd(object: TableEntityResult<Record<string, unknown>> | IDBRoomAdd): object is IDBRoomAdd {
+    return true;
 }
