@@ -33,6 +33,9 @@ export const useStyles = createUseStyles((theme: ITheme) => {
             padding: "1%",
             width: "100%"
         },
+        avatar: {
+            marginRight: "8px"
+        },
         '@global': {
             body: {
                 background: "#FFFFFF"

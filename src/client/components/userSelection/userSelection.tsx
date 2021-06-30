@@ -174,7 +174,7 @@ export const UserSelection = (props: IUserSelectionProp) => {
                                 onChange={(ev, p) => { allAttendees(user, p ? p.checked : false) }} />
                             {user.type !== "external" ?
                                 <People peopleQueries={[user.emailAddress.address]} /> :
-                                <Avatar name={user.emailAddress.name} />
+                                <Avatar className={classes.avatar} name={user.emailAddress.name} />
                             }
                             <Text content={user.emailAddress.name} />
                         </Flex>
