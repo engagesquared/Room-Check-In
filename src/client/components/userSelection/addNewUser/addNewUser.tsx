@@ -45,7 +45,7 @@ export const AddNewUser = (props: IAddNewUserProp) => {
                     selectedUser.mail : ""}
             />
             <Input styles={{ width: "20em" }} disabled
-                label={t('phone')} value={selectedUser.mobilePhone ?? "" }
+                label={t('phone')} value={selectedUser ? selectedUser.mobilePhone ?? "" : ""}
             />
             <Flex>
                 <Button content={t('savebtnlbl')} onClick={onSave}
