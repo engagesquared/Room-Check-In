@@ -23,9 +23,8 @@ export const AddNewUser = (props: IAddNewUserProp) => {
     const onSave = () => {
         selectedUser ? props.updateUser(false, {
             name: selectedUser.displayName,
-            email: selectedUser.scoredEmailAddresses[0].address
-            , phone: selectedUser.phones.length > 0 ?
-                selectedUser.phones[0].number : "",
+            email: selectedUser.mail,
+            phone: selectedUser.mobilePhone ?? "",
             type: "internal",
             principalName: selectedUser.userPrincipalName
         }) : setIsError(true);
